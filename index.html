@@ -8,7 +8,6 @@
 <style>
   :root {
     --bg: #0f0c29;
-    --bg2: #1a1548;
     --card: rgba(255,255,255,0.07);
     --border: rgba(255,255,255,0.15);
     --accent: #f9c74f;
@@ -22,9 +21,7 @@
     --radius: 18px;
     --shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: 'Nunito', sans-serif;
     background: var(--bg);
@@ -35,338 +32,243 @@
       radial-gradient(ellipse at 20% 20%, rgba(76,201,240,0.12) 0%, transparent 60%),
       radial-gradient(ellipse at 80% 80%, rgba(181,23,158,0.15) 0%, transparent 60%);
   }
-
-  /* STARS */
-  .stars {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  }
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
   .star {
-    position: absolute;
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: white;
+    position: absolute; border-radius: 50%; background: white;
     animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
   }
   @keyframes twinkle {
     0%,100% { opacity: 0.2; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.5); }
   }
-
   .app { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 20px 16px 60px; }
 
-  /* HEADER */
   .header { text-align: center; padding: 30px 0 20px; }
   .header h1 {
     font-family: 'Fredoka One', cursive;
     font-size: clamp(2rem, 7vw, 3.2rem);
     background: linear-gradient(135deg, var(--accent), var(--accent2), var(--red));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
-    line-height: 1.1;
-    margin-bottom: 6px;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1.1; margin-bottom: 6px;
   }
   .header p { color: var(--text2); font-size: 1rem; }
 
-  /* CARDS */
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    backdrop-filter: blur(12px);
-    box-shadow: var(--shadow);
-    margin-bottom: 18px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px;
+    backdrop-filter: blur(12px); box-shadow: var(--shadow); margin-bottom: 18px;
   }
-
   .section-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.1rem;
-    color: var(--accent);
-    margin-bottom: 14px;
+    font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+    color: var(--accent); margin-bottom: 14px;
     display: flex; align-items: center; gap: 8px;
   }
 
   /* TABLA SELECTOR */
-  .tabla-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
+  .tabla-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   @media(min-width:400px) { .tabla-grid { grid-template-columns: repeat(5, 1fr); } }
-
   .tabla-btn {
-    aspect-ratio: 1;
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    background: transparent;
-    color: var(--text);
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
+    aspect-ratio: 1; border: 2px solid var(--border); border-radius: 14px;
+    background: transparent; color: var(--text);
+    font-family: 'Fredoka One', cursive; font-size: 1.5rem;
+    cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
   }
   .tabla-btn::before {
-    content: '';
-    position: absolute; inset: 0;
+    content: ''; position: absolute; inset: 0;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    opacity: 0;
-    transition: opacity 0.2s;
+    opacity: 0; transition: opacity 0.2s;
   }
   .tabla-btn span { position: relative; z-index: 1; }
   .tabla-btn.active { border-color: var(--accent); }
   .tabla-btn.active::before { opacity: 1; }
   .tabla-btn:hover:not(.active) { border-color: rgba(255,255,255,0.4); transform: scale(1.05); }
 
-  .select-all-row {
-    display: flex; gap: 10px; margin-bottom: 12px;
-  }
+  .select-all-row { display: flex; gap: 10px; margin-bottom: 12px; }
   .chip {
-    padding: 7px 16px;
-    border-radius: 30px;
-    border: 1.5px solid var(--border);
-    background: transparent;
-    color: var(--text2);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.02em;
+    padding: 7px 16px; border-radius: 30px; border: 1.5px solid var(--border);
+    background: transparent; color: var(--text2);
+    font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
   }
   .chip:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* MODO SELECTOR */
+  /* MODO */
   .modos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   @media(min-width:480px) { .modos-grid { grid-template-columns: repeat(3, 1fr); } }
-
   .modo-btn {
-    padding: 14px 10px;
-    border-radius: 14px;
-    border: 2px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.82rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    line-height: 1.3;
+    padding: 14px 10px; border-radius: 14px; border: 2px solid var(--border);
+    background: transparent; color: var(--text);
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.82rem;
+    cursor: pointer; transition: all 0.2s; text-align: center; line-height: 1.3;
   }
   .modo-btn .modo-icon { font-size: 1.6rem; display: block; margin-bottom: 5px; }
   .modo-btn.active { border-color: var(--blue); background: rgba(76,201,240,0.15); }
   .modo-btn:hover:not(.active) { border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
 
-  /* PLAY BTN */
+  /* NUM PREGUNTAS */
+  .nq-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .nq-btn {
+    padding: 8px 18px; border-radius: 30px; border: 1.5px solid var(--border);
+    background: transparent; color: var(--text2);
+    font-family: 'Fredoka One', cursive; font-size: 1rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .nq-btn.active { border-color: var(--green); color: var(--green); background: rgba(67,233,123,0.1); }
+  .nq-btn:hover:not(.active) { border-color: rgba(255,255,255,0.3); color: var(--text); }
+  .nq-custom {
+    width: 70px; padding: 8px 10px; border-radius: 30px;
+    border: 1.5px solid var(--border); background: transparent; color: var(--text);
+    font-family: 'Fredoka One', cursive; font-size: 1rem; text-align: center; outline: none;
+  }
+  .nq-custom:focus { border-color: var(--green); }
+  .nq-note { font-size: 0.8rem; color: var(--text2); margin-top: 8px; }
+
   .play-btn {
-    width: 100%;
-    padding: 18px;
-    border-radius: var(--radius);
-    border: none;
+    width: 100%; padding: 18px; border-radius: var(--radius); border: none;
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    color: #1a0a00;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.4rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 20px rgba(249,199,79,0.35);
-    letter-spacing: 0.02em;
+    color: #1a0a00; font-family: 'Fredoka One', cursive; font-size: 1.4rem;
+    cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(249,199,79,0.35);
   }
   .play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(249,199,79,0.5); }
-  .play-btn:active { transform: translateY(0); }
   .play-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-  /* GAME SCREEN */
-  #gameScreen { display: none; }
-
-  .game-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px;
-  }
+  /* GAME */
+  .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
   .back-btn {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: var(--text2);
-    padding: 8px 16px;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    transition: all 0.2s;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text2); padding: 8px 16px; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.9rem; transition: all 0.2s;
   }
-  .back-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.3); }
-
-  .stats-row { display: flex; gap: 12px; align-items: center; }
+  .back-btn:hover { color: var(--text); }
+  .stats-row { display: flex; gap: 10px; align-items: center; }
   .stat-badge {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 6px 14px;
-    font-weight: 800;
-    font-size: 0.9rem;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 6px 12px; font-weight: 800; font-size: 0.9rem;
   }
   .stat-badge.timer { color: var(--accent); }
-  .stat-badge.score { color: var(--green); }
-  .stat-badge.progress-s { color: var(--blue); }
+  .stat-badge.score-s { color: var(--green); }
+  .stat-badge.prog { color: var(--blue); }
 
-  /* QUESTION CARD */
+  .progress-bar-wrap { height: 6px; background: rgba(255,255,255,0.1); border-radius: 30px; margin-bottom: 20px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--purple)); border-radius: 30px; transition: width 0.4s ease; }
+
   .question-card {
-    text-align: center;
-    padding: 36px 24px;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
+    text-align: center; padding: 36px 24px; margin-bottom: 0;
+    position: relative; overflow: hidden;
   }
   .question-card::before {
-    content: '';
-    position: absolute; inset: 0;
+    content: ''; position: absolute; inset: 0;
     background: linear-gradient(135deg, rgba(76,201,240,0.08), rgba(181,23,158,0.08));
     border-radius: var(--radius);
   }
-
   .modo-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 16px;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 14px; position: relative;
   }
-
   .question-text {
     font-family: 'Fredoka One', cursive;
-    font-size: clamp(2.4rem, 10vw, 4rem);
-    line-height: 1;
-    color: var(--text);
-    margin-bottom: 10px;
-    position: relative;
+    font-size: clamp(2.2rem, 9vw, 3.8rem);
+    line-height: 1; color: var(--text); position: relative;
   }
-  .question-text .blank {
-    color: var(--accent);
-    background: rgba(249,199,79,0.15);
-    border-bottom: 3px solid var(--accent);
-    padding: 0 8px;
-    border-radius: 6px;
+  .blank {
+    color: var(--accent); background: rgba(249,199,79,0.15);
+    border-bottom: 3px solid var(--accent); padding: 0 8px; border-radius: 6px;
   }
 
-  /* OPCIONES (multiple choice) */
+  .answer-panel { padding-top: 20px; }
   .opciones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
   .opcion-btn {
-    padding: 18px;
-    border-radius: 14px;
-    border: 2px solid var(--border);
-    background: rgba(255,255,255,0.05);
-    color: var(--text);
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.8rem;
-    cursor: pointer;
-    transition: all 0.18s;
+    padding: 18px; border-radius: 14px; border: 2px solid var(--border);
+    background: rgba(255,255,255,0.05); color: var(--text);
+    font-family: 'Fredoka One', cursive; font-size: 1.8rem;
+    cursor: pointer; transition: all 0.18s;
   }
   .opcion-btn:hover:not(:disabled) { border-color: var(--blue); background: rgba(76,201,240,0.12); transform: scale(1.03); }
   .opcion-btn.correct { border-color: var(--green) !important; background: rgba(67,233,123,0.18) !important; color: var(--green); }
   .opcion-btn.wrong { border-color: var(--red) !important; background: rgba(247,37,133,0.18) !important; color: var(--red); }
   .opcion-btn:disabled { cursor: default; }
 
-  /* INPUT MODE */
   .input-row { display: flex; gap: 12px; align-items: center; }
   .answer-input {
-    flex: 1;
-    background: rgba(255,255,255,0.08);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    color: var(--text);
-    font-family: 'Fredoka One', cursive;
-    font-size: 2rem;
-    padding: 16px 20px;
-    text-align: center;
-    outline: none;
-    transition: border-color 0.2s;
+    flex: 1; background: rgba(255,255,255,0.08); border: 2px solid var(--border);
+    border-radius: 14px; color: var(--text);
+    font-family: 'Fredoka One', cursive; font-size: 2rem;
+    padding: 16px 20px; text-align: center; outline: none; transition: border-color 0.2s;
   }
   .answer-input:focus { border-color: var(--blue); }
   .answer-input.correct { border-color: var(--green); background: rgba(67,233,123,0.12); }
   .answer-input.wrong { border-color: var(--red); background: rgba(247,37,133,0.12); }
-
   .check-btn {
-    padding: 16px 24px;
-    border-radius: 14px;
-    border: none;
+    padding: 16px 24px; border-radius: 14px; border: none;
     background: linear-gradient(135deg, var(--blue), var(--purple));
-    color: white;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.2s;
+    color: white; font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+    cursor: pointer; transition: all 0.2s;
   }
   .check-btn:hover { transform: scale(1.05); }
 
-  /* TRUE/FALSE */
   .tf-row { display: flex; gap: 14px; }
   .tf-btn {
-    flex: 1;
-    padding: 20px;
-    border-radius: 14px;
-    border: 2px solid var(--border);
-    background: transparent;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text);
+    flex: 1; padding: 20px; border-radius: 14px; border: 2px solid var(--border);
+    background: transparent; font-family: 'Fredoka One', cursive; font-size: 1.3rem;
+    cursor: pointer; transition: all 0.2s; color: var(--text);
   }
-  .tf-btn.verdadero:hover { border-color: var(--green); color: var(--green); }
-  .tf-btn.falso:hover { border-color: var(--red); color: var(--red); }
+  .tf-btn.verdadero:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
+  .tf-btn.falso:hover:not(:disabled) { border-color: var(--red); color: var(--red); }
   .tf-btn.correct { border-color: var(--green) !important; background: rgba(67,233,123,0.18) !important; color: var(--green) !important; }
   .tf-btn.wrong { border-color: var(--red) !important; background: rgba(247,37,133,0.18) !important; color: var(--red) !important; }
   .tf-btn:disabled { cursor: default; }
 
-  /* FEEDBACK */
   .feedback {
-    text-align: center;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.3rem;
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 14px;
-    display: none;
-    animation: popIn 0.25s ease;
+    text-align: center; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
+    padding: 12px; border-radius: 12px; margin-top: 14px; animation: popIn 0.25s ease;
   }
-  .feedback.show { display: block; }
-  .feedback.correct { color: var(--green); background: rgba(67,233,123,0.1); }
-  .feedback.wrong { color: var(--red); background: rgba(247,37,133,0.1); }
   @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .feedback.correct { color: var(--green); background: rgba(67,233,123,0.1); }
+  .feedback.feedback-wrong { color: var(--red); background: rgba(247,37,133,0.1); }
 
   .next-btn {
-    width: 100%;
-    padding: 15px;
-    border-radius: 14px;
-    border: none;
+    width: 100%; padding: 15px; border-radius: 14px; border: none;
     background: linear-gradient(135deg, var(--green), #00c6c6);
-    color: #001a1a;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: none;
+    color: #001a1a; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
+    cursor: pointer; transition: all 0.2s; margin-top: 14px;
   }
-  .next-btn.show { display: block; }
   .next-btn:hover { transform: translateY(-2px); }
 
-  /* RESULTS */
-  #resultsScreen { display: none; }
-  .results-card { text-align: center; padding: 36px 24px; }
-  .big-score {
-    font-family: 'Fredoka One', cursive;
-    font-size: 5rem;
-    line-height: 1;
-    margin-bottom: 8px;
+  /* RULETA */
+  .ruleta-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px 0 20px; }
+  .ruleta-num {
+    font-family: 'Fredoka One', cursive; font-size: 7rem;
+    color: var(--accent); text-shadow: 0 0 40px rgba(249,199,79,0.5); line-height: 1;
   }
+  .ruleta-num.spinning { animation: rulspin 0.1s linear infinite; }
+  @keyframes rulspin { 0%,100%{transform:scale(1)}50%{transform:scale(1.12)} }
+  .spin-btn {
+    padding: 14px 32px; border-radius: 40px; border: none;
+    background: linear-gradient(135deg, var(--purple), var(--red));
+    color: white; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
+    cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(181,23,158,0.4);
+  }
+  .spin-btn:hover:not(:disabled) { transform: scale(1.05); }
+  .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .tabla-completa { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+  .tabla-fila {
+    background: rgba(255,255,255,0.06); border-radius: 10px;
+    padding: 10px; text-align: center; font-weight: 800; font-size: 0.95rem;
+    animation: fadeIn 0.3s ease both; animation-delay: calc(var(--i) * 0.04s);
+  }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+  .ruleta-action-btn {
+    width: 100%; padding: 15px; border-radius: 14px; border: none;
+    font-family: 'Fredoka One', cursive; font-size: 1.1rem;
+    cursor: pointer; transition: all 0.2s; margin-top: 10px;
+  }
+  .ruleta-action-btn.otra { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #1a0a00; }
+  .ruleta-action-btn.fin { background: linear-gradient(135deg, var(--purple), var(--blue)); color: white; }
+  .ruleta-action-btn:hover { transform: translateY(-2px); }
+
+  /* RESULTS */
+  .results-card { text-align: center; padding: 36px 24px; }
+  .big-score { font-family: 'Fredoka One', cursive; font-size: 5rem; line-height: 1; margin-bottom: 8px; }
   .score-msg { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; }
   .results-bars { margin: 20px 0; text-align: left; }
   .result-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -376,75 +278,17 @@
   .result-bar.correct { background: linear-gradient(90deg, var(--green), #00c6c6); }
   .result-bar.wrong { background: linear-gradient(90deg, var(--red), var(--purple)); }
   .result-count { width: 32px; font-weight: 800; font-size: 0.9rem; text-align: right; }
-
   .replay-btn {
-    padding: 16px 32px;
-    border-radius: var(--radius);
-    border: none;
+    padding: 16px 32px; border-radius: var(--radius); border: none;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #1a0a00;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin: 6px;
-    transition: all 0.2s;
+    color: #1a0a00; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
+    cursor: pointer; margin: 6px; transition: all 0.2s;
   }
   .replay-btn:hover { transform: scale(1.05); }
-  .replay-btn.secondary {
-    background: var(--card);
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
+  .replay-btn.secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
 
-  /* PROGRESS BAR */
-  .progress-bar-wrap {
-    height: 6px; background: rgba(255,255,255,0.1); border-radius: 30px; margin-bottom: 20px; overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--blue), var(--purple));
-    border-radius: 30px;
-    transition: width 0.4s ease;
-  }
-
-  /* RULETA */
-  .ruleta-wrap {
-    display: flex; flex-direction: column; align-items: center; gap: 16px;
-    padding: 30px;
-  }
-  .ruleta-num {
-    font-family: 'Fredoka One', cursive;
-    font-size: 8rem;
-    color: var(--accent);
-    text-shadow: 0 0 40px rgba(249,199,79,0.5);
-    line-height: 1;
-    animation: none;
-  }
-  .ruleta-num.spinning {
-    animation: spin 0.08s linear infinite;
-  }
-  @keyframes spin { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-  .spin-btn {
-    padding: 14px 32px;
-    border-radius: 40px;
-    border: none;
-    background: linear-gradient(135deg, var(--purple), var(--red));
-    color: white;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 20px rgba(181,23,158,0.4);
-  }
-  .spin-btn:hover { transform: scale(1.05); }
-
-  /* CONFETTI */
   .confetti-piece {
-    position: fixed;
-    width: 10px; height: 10px;
-    border-radius: 2px;
-    pointer-events: none;
-    z-index: 9999;
+    position: fixed; border-radius: 2px; pointer-events: none; z-index: 9999;
     animation: confettiFall var(--dur, 3s) linear forwards;
   }
   @keyframes confettiFall {
@@ -452,18 +296,7 @@
     100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
   }
 
-  /* TIMER BAR (carrera) */
-  .timer-bar-wrap {
-    height: 10px; background: rgba(255,255,255,0.1); border-radius: 30px; margin-bottom: 16px; overflow: hidden;
-  }
-  .timer-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--green), var(--accent), var(--red));
-    border-radius: 30px;
-    transition: width 0.5s linear;
-  }
-
-  .hidden { display: none !important; }
+  .d-none { display: none !important; }
 </style>
 </head>
 <body>
@@ -472,14 +305,13 @@
 
 <div class="app">
 
-  <!-- HOME SCREEN -->
+  <!-- ===== HOME ===== -->
   <div id="homeScreen">
     <div class="header">
       <h1>🌟 Tablas de Multiplicar</h1>
       <p>¡A por todas las tablas, campeón!</p>
     </div>
 
-    <!-- SELECTOR DE TABLAS -->
     <div class="card">
       <div class="section-title">📋 Elige las tablas</div>
       <div class="select-all-row">
@@ -489,97 +321,99 @@
       <div class="tabla-grid" id="tablaGrid"></div>
     </div>
 
-    <!-- MODO DE JUEGO -->
     <div class="card">
       <div class="section-title">🎮 Elige el modo</div>
       <div class="modos-grid">
         <button class="modo-btn active" data-modo="adivina" onclick="selectModo(this)">
-          <span class="modo-icon">🔢</span>
-          Adivina el resultado
+          <span class="modo-icon">🔢</span>Adivina el resultado
         </button>
         <button class="modo-btn" data-modo="factor" onclick="selectModo(this)">
-          <span class="modo-icon">❓</span>
-          ¿Qué número falta?
+          <span class="modo-icon">❓</span>¿Qué número falta?
+        </button>
+        <button class="modo-btn" data-modo="escribe" onclick="selectModo(this)">
+          <span class="modo-icon">✏️</span>Escribe la respuesta
         </button>
         <button class="modo-btn" data-modo="verdadero" onclick="selectModo(this)">
-          <span class="modo-icon">✅</span>
-          Verdadero o Falso
-        </button>
-        <button class="modo-btn" data-modo="test" onclick="selectModo(this)">
-          <span class="modo-icon">📝</span>
-          Test (10 preguntas)
+          <span class="modo-icon">✅</span>Verdadero o Falso
         </button>
         <button class="modo-btn" data-modo="carrera" onclick="selectModo(this)">
-          <span class="modo-icon">⏱️</span>
-          Carrera 60 seg.
+          <span class="modo-icon">⏱️</span>Carrera 60 seg.
         </button>
         <button class="modo-btn" data-modo="ruleta" onclick="selectModo(this)">
-          <span class="modo-icon">🎯</span>
-          Ruleta aleatoria
+          <span class="modo-icon">🎯</span>Ruleta de tablas
         </button>
       </div>
+    </div>
+
+    <div class="card" id="numPreguntasCard">
+      <div class="section-title">🔢 ¿Cuántas preguntas?</div>
+      <div class="nq-row">
+        <button class="nq-btn active" data-n="5" onclick="selectNQ(this)">5</button>
+        <button class="nq-btn" data-n="10" onclick="selectNQ(this)">10</button>
+        <button class="nq-btn" data-n="15" onclick="selectNQ(this)">15</button>
+        <button class="nq-btn" data-n="20" onclick="selectNQ(this)">20</button>
+        <input type="number" class="nq-custom" id="nqCustom" min="1" max="50" placeholder="…" oninput="customNQ(this)">
+      </div>
+      <div class="nq-note">Máximo 50 preguntas</div>
     </div>
 
     <button class="play-btn" id="playBtn" onclick="startGame()">¡JUGAR! 🚀</button>
   </div>
 
-  <!-- GAME SCREEN -->
-  <div id="gameScreen">
+  <!-- ===== GAME ===== -->
+  <div id="gameScreen" class="d-none">
     <div class="game-header">
       <button class="back-btn" onclick="goHome()">← Menú</button>
       <div class="stats-row">
-        <div class="stat-badge timer" id="timerBadge" style="display:none">⏱️ <span id="timerDisplay">60</span>s</div>
-        <div class="stat-badge score" id="scoreBadge">✅ <span id="scoreDisplay">0</span></div>
-        <div class="stat-badge progress-s" id="progressBadge">📊 <span id="progressDisplay">0/10</span></div>
+        <div class="stat-badge timer d-none" id="timerBadge">⏱️ <span id="timerDisplay">60</span>s</div>
+        <div class="stat-badge score-s">✅ <span id="scoreDisplay">0</span></div>
+        <div class="stat-badge prog" id="progressBadge">📊 <span id="progressDisplay">0/5</span></div>
       </div>
     </div>
-
     <div class="progress-bar-wrap">
       <div class="progress-bar-fill" id="progressBarFill" style="width:0%"></div>
     </div>
 
-    <!-- RULETA MODE -->
-    <div id="roulettePanel" class="card hidden">
-      <div class="section-title">🎯 Ruleta de tablas</div>
-      <div class="ruleta-wrap">
-        <div class="ruleta-num" id="ruletaNum">?</div>
-        <p style="color:var(--text2);font-weight:700;">Tabla del...</p>
-        <button class="spin-btn" onclick="spinRuleta()">🎲 ¡Girar!</button>
+    <!-- RULETA PANEL -->
+    <div id="roulettePanel" class="d-none">
+      <div class="card">
+        <div class="section-title">🎯 Ruleta de tablas</div>
+        <div class="ruleta-wrap">
+          <div style="color:var(--text2);font-weight:700;font-size:0.95rem;">Tabla del...</div>
+          <div class="ruleta-num" id="ruletaNum">?</div>
+          <button class="spin-btn" id="spinBtn" onclick="spinRuleta()">🎲 ¡Girar!</button>
+        </div>
+        <div class="tabla-completa d-none" id="tablaCompleta"></div>
+        <button class="ruleta-action-btn otra d-none" id="ruletaOtraBtn" onclick="resetRuleta()">🔄 Otra tabla</button>
+        <button class="ruleta-action-btn fin d-none" id="ruletaFinBtn" onclick="goHome()">🏠 Terminar</button>
       </div>
     </div>
 
-    <!-- QUESTION AREA -->
-    <div id="questionPanel">
+    <!-- QUESTION PANEL -->
+    <div id="questionPanel" class="d-none">
       <div class="card question-card">
-        <div class="modo-label" id="modoLabel">🔢 RESULTADO</div>
-        <div class="question-text" id="questionText">6 × 7 = ?</div>
+        <div class="modo-label" id="modoLabel"></div>
+        <div class="question-text" id="questionText"></div>
       </div>
-
-      <div class="card">
-        <!-- Multiple choice -->
-        <div id="opcionesPanel" class="opciones-grid"></div>
-        <!-- Input -->
-        <div id="inputPanel" class="input-row hidden">
-          <input type="number" class="answer-input" id="answerInput" placeholder="?" min="0" max="81" onkeydown="handleKey(event)">
+      <div class="card answer-panel">
+        <div id="opcionesPanel" class="opciones-grid d-none"></div>
+        <div id="inputPanel" class="input-row d-none">
+          <input type="number" class="answer-input" id="answerInput" placeholder="?" min="0" max="100" onkeydown="handleKey(event)">
           <button class="check-btn" onclick="checkInput()">✓</button>
         </div>
-        <!-- True/False -->
-        <div id="tfPanel" class="tf-row hidden">
-          <button class="tf-btn verdadero" onclick="checkTF(true)">✅ Verdadero</button>
-          <button class="tf-btn falso" onclick="checkTF(false)">❌ Falso</button>
+        <div id="tfPanel" class="tf-row d-none">
+          <button class="tf-btn verdadero" id="tfTrue" onclick="checkTF(true)">✅ Verdadero</button>
+          <button class="tf-btn falso" id="tfFalse" onclick="checkTF(false)">❌ Falso</button>
         </div>
-
-        <div class="feedback" id="feedbackEl"></div>
-        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
+        <div id="feedbackEl" class="d-none"></div>
+        <button class="next-btn d-none" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
       </div>
     </div>
   </div>
 
-  <!-- RESULTS SCREEN -->
-  <div id="resultsScreen">
-    <div class="header">
-      <h1>🏆 Resultado</h1>
-    </div>
+  <!-- ===== RESULTS ===== -->
+  <div id="resultsScreen" class="d-none">
+    <div class="header"><h1>🏆 Resultado</h1></div>
     <div class="card results-card">
       <div class="big-score" id="bigScore"></div>
       <div class="score-msg" id="scoreMsg"></div>
@@ -595,7 +429,7 @@
           <div class="result-count" id="wrongCount">0</div>
         </div>
       </div>
-      <div id="wrongList" style="text-align:left;margin-top:10px;"></div>
+      <div id="wrongList"></div>
       <br>
       <button class="replay-btn" onclick="startGame()">🔄 Otra vez</button>
       <button class="replay-btn secondary" onclick="goHome()">🏠 Menú</button>
@@ -605,251 +439,286 @@
 </div>
 
 <script>
-// ---- STARS ----
+// STARS
 const starsEl = document.getElementById('stars');
 for(let i=0;i<60;i++){
-  const s = document.createElement('div');
-  s.className = 'star';
-  s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;opacity:${0.2+Math.random()*0.8};width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;`;
+  const s=document.createElement('div'); s.className='star';
+  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;`;
   starsEl.appendChild(s);
 }
 
-// ---- STATE ----
-let selectedTablas = [1,2,3,4,5,6,7,8,9];
-let selectedModo = 'adivina';
-let currentQ = null;
-let score = 0, errors = 0, qNum = 0, totalQ = 10;
-let timerInterval = null;
-let timerLeft = 60;
-let wrongAnswers = [];
-let answered = false;
+// STATE
+let selectedTablas=[1,2,3,4,5,6,7,8,9];
+let selectedModo='adivina';
+let numPreguntas=5;
+let currentQ=null;
+let score=0,errors=0,qNum=0;
+let timerInterval=null,timerLeft=60;
+let wrongAnswers=[];
+let answered=false;
+let ruletaSeen=[];
 
-// ---- TABLA GRID ----
-const tablaGrid = document.getElementById('tablaGrid');
+// TABLA GRID
+const tablaGrid=document.getElementById('tablaGrid');
 for(let i=1;i<=9;i++){
-  const b = document.createElement('button');
-  b.className = 'tabla-btn active';
-  b.innerHTML = `<span>${i}</span>`;
-  b.dataset.num = i;
-  b.onclick = () => toggleTabla(i, b);
+  const b=document.createElement('button'); b.className='tabla-btn active';
+  b.innerHTML=`<span>${i}</span>`; b.dataset.num=i;
+  b.onclick=()=>toggleTabla(i,b);
   tablaGrid.appendChild(b);
 }
-
-function toggleTabla(n, btn){
-  const idx = selectedTablas.indexOf(n);
-  if(idx>=0){ selectedTablas.splice(idx,1); btn.classList.remove('active'); }
-  else { selectedTablas.push(n); btn.classList.add('active'); }
+function toggleTabla(n,btn){
+  const idx=selectedTablas.indexOf(n);
+  if(idx>=0){selectedTablas.splice(idx,1);btn.classList.remove('active');}
+  else{selectedTablas.push(n);btn.classList.add('active');}
   updatePlayBtn();
 }
 function selectAll(){ selectedTablas=[1,2,3,4,5,6,7,8,9]; document.querySelectorAll('.tabla-btn').forEach(b=>b.classList.add('active')); updatePlayBtn(); }
 function selectNone(){ selectedTablas=[]; document.querySelectorAll('.tabla-btn').forEach(b=>b.classList.remove('active')); updatePlayBtn(); }
-function updatePlayBtn(){ document.getElementById('playBtn').disabled = selectedTablas.length===0; }
+function updatePlayBtn(){ document.getElementById('playBtn').disabled=selectedTablas.length===0; }
 
-// ---- MODO ----
+// MODO
 function selectModo(btn){
   document.querySelectorAll('.modo-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  selectedModo = btn.dataset.modo;
+  selectedModo=btn.dataset.modo;
+  const hideNQ=selectedModo==='carrera'||selectedModo==='ruleta';
+  document.getElementById('numPreguntasCard').style.display=hideNQ?'none':'block';
 }
 
-// ---- GENERATE QUESTION ----
-function randTabla(){ return selectedTablas[Math.floor(Math.random()*selectedTablas.length)]; }
-function rnd(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+// NUM PREGUNTAS
+function selectNQ(btn){
+  document.querySelectorAll('.nq-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  numPreguntas=parseInt(btn.dataset.n);
+  document.getElementById('nqCustom').value='';
+}
+function customNQ(inp){
+  let v=parseInt(inp.value);
+  if(isNaN(v)||v<1) return;
+  if(v>50){v=50;inp.value=50;}
+  numPreguntas=v;
+  document.querySelectorAll('.nq-btn').forEach(b=>b.classList.remove('active'));
+}
 
+// HELPERS
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function randTabla(){return selectedTablas[Math.floor(Math.random()*selectedTablas.length)];}
+function G(id){return document.getElementById(id);}
+function show(id,d='block'){const e=G(id);e.classList.remove('d-none');if(d==='grid')e.style.display='grid';else if(d==='flex')e.style.display='flex';}
+function hide(id){G(id).classList.add('d-none');}
+
+// GENERATE QUESTION
 function generateQ(){
-  const a = randTabla();
-  const b = rnd(1,10);
-  const res = a*b;
+  // a es siempre de las tablas seleccionadas, b es 1-10
+  const a=randTabla();
+  const b=rnd(1,10);
+  const res=a*b;
 
-  if(selectedModo==='adivina' || selectedModo==='test' || selectedModo==='carrera'){
-    // multiple choice con 4 opciones
-    const correct = res;
-    const opts = new Set([correct]);
-    while(opts.size<4){
-      let fake = correct + rnd(-4,4)*rnd(1,3);
-      if(fake>0 && fake!==correct) opts.add(fake);
-    }
-    const shuffled = [...opts].sort(()=>Math.random()-0.5);
-    return { type:'choice', question:`${a} × ${b} = ?`, answer:correct, opts:shuffled, tabla:a, factor:b };
+  if(selectedModo==='adivina'||selectedModo==='carrera'){
+    return {type:'choice', qText:`${a} × ${b} = ?`, answer:res, opts:buildOpts(res,1,90)};
   }
-
+  if(selectedModo==='escribe'){
+    return {type:'input', qText:`${a} × ${b} = ?`, answer:res};
+  }
   if(selectedModo==='factor'){
-    // Escribe el factor que falta, opciones múltiples también
-    const missing = Math.random()<0.5 ? 'a' : 'b';
-    const shown = missing==='a' ? b : a;
-    const label = missing==='a' ? `? × ${shown} = ${res}` : `${shown} × ? = ${res}`;
-    const correct2 = missing==='a' ? a : b;
-    const opts = new Set([correct2]);
-    while(opts.size<4){
-      let fake = rnd(1,10);
-      if(fake!==correct2) opts.add(fake);
-    }
-    return { type:'choice', question:label, answer:correct2, opts:[...opts].sort(()=>Math.random()-0.5), tabla:a, factor:b };
+    // ocultar a o b aleatoriamente
+    const ocultarA=Math.random()<0.5;
+    const qText=ocultarA?`? × ${b} = ${res}`:`${a} × ? = ${res}`;
+    const correct=ocultarA?a:b;
+    return {type:'choice', qText, answer:correct, opts:buildOpts(correct,1,10)};
   }
-
   if(selectedModo==='verdadero'){
-    const isTrue = Math.random()<0.6;
-    let shown;
-    if(isTrue){ shown=res; }
-    else {
-      do { shown=res+rnd(-3,3)*rnd(1,2); } while(shown===res||shown<0);
+    const isTrue=Math.random()<0.55;
+    let shown=res;
+    if(!isTrue){
+      const deltas=[-3,-2,-1,1,2,3];
+      let tries=0;
+      do{ shown=res+deltas[Math.floor(Math.random()*deltas.length)]; tries++; }
+      while((shown<=0||shown===res)&&tries<20);
     }
-    return { type:'tf', question:`${a} × ${b} = ${shown}`, answer:isTrue, realAnswer:res, tabla:a, factor:b };
+    return {type:'tf', qText:`${a} × ${b} = ${shown}`, answer:isTrue, realAnswer:res};
   }
 }
 
-// ---- START GAME ----
+function buildOpts(correct,min,max){
+  const s=new Set([correct]);
+  let tries=0;
+  while(s.size<4&&tries<300){
+    tries++;
+    const d=rnd(1,4)*(Math.random()<0.5?1:-1);
+    const f=correct+d;
+    if(f>=min&&f<=max&&f!==correct) s.add(f);
+  }
+  // rellenar si falta
+  while(s.size<4){
+    const f=rnd(Math.max(min,correct-6),Math.min(max,correct+6));
+    if(!s.has(f)) s.add(f);
+  }
+  return [...s].sort(()=>Math.random()-0.5);
+}
+
+// START GAME
 function startGame(){
   if(selectedTablas.length===0) return;
-  score=0; errors=0; qNum=0; wrongAnswers=[];
-  totalQ = (selectedModo==='carrera') ? 999 : (selectedModo==='ruleta') ? 1 : 10;
+  score=0;errors=0;qNum=0;wrongAnswers=[];answered=false;ruletaSeen=[];
+  G('scoreDisplay').textContent='0';
+  G('progressBarFill').style.width='0%';
 
-  show('gameScreen');
-  hide('homeScreen'); hide('resultsScreen');
-
-  updateScoreboard();
-
-  if(selectedModo==='carrera'){
-    timerLeft=60;
-    document.getElementById('timerBadge').style.display='flex';
-    document.getElementById('progressBadge').style.display='none';
-    startTimer();
-  } else {
-    document.getElementById('timerBadge').style.display='none';
-    document.getElementById('progressBadge').style.display='flex';
-  }
+  hide('homeScreen'); hide('resultsScreen'); show('gameScreen');
 
   if(selectedModo==='ruleta'){
+    hide('timerBadge'); hide('progressBadge');
     show('roulettePanel'); hide('questionPanel');
-    document.getElementById('ruletaNum').textContent='?';
-  } else {
+    resetRuleta();
+  } else if(selectedModo==='carrera'){
+    show('timerBadge','flex'); hide('progressBadge');
     hide('roulettePanel'); show('questionPanel');
+    timerLeft=60; G('timerDisplay').textContent=60;
+    startTimer();
+    nextQuestion();
+  } else {
+    hide('timerBadge'); show('progressBadge');
+    hide('roulettePanel'); show('questionPanel');
+    updateProgress();
     nextQuestion();
   }
 }
 
+// TIMER
 function startTimer(){
   clearInterval(timerInterval);
-  updateTimerDisplay();
-  timerInterval = setInterval(()=>{
+  timerInterval=setInterval(()=>{
     timerLeft--;
-    updateTimerDisplay();
-    if(timerLeft<=0){ clearInterval(timerInterval); showResults(); }
-  }, 1000);
+    G('timerDisplay').textContent=timerLeft;
+    if(timerLeft<=0){clearInterval(timerInterval);showResults();}
+  },1000);
 }
 
-function updateTimerDisplay(){
-  const el = document.getElementById('timerDisplay');
-  if(el) el.textContent = timerLeft;
+// RULETA
+function resetRuleta(){
+  G('ruletaNum').textContent='?';
+  G('ruletaNum').classList.remove('spinning');
+  G('spinBtn').disabled=false;
+  G('tablaCompleta').innerHTML='';
+  hide('tablaCompleta'); hide('ruletaOtraBtn'); hide('ruletaFinBtn');
 }
 
-// ---- RULETA ----
 function spinRuleta(){
-  const btn = document.querySelector('.spin-btn');
-  btn.disabled=true;
-  const numEl = document.getElementById('ruletaNum');
+  if(selectedTablas.length===0) return;
+  G('spinBtn').disabled=true;
+  hide('tablaCompleta'); hide('ruletaOtraBtn'); hide('ruletaFinBtn');
+
+  const numEl=G('ruletaNum');
   numEl.classList.add('spinning');
-  let spins = 0;
-  const iv = setInterval(()=>{
-    numEl.textContent = selectedTablas[Math.floor(Math.random()*selectedTablas.length)];
+
+  // No repetir tabla hasta haber visto todas
+  let available=selectedTablas.filter(t=>!ruletaSeen.includes(t));
+  if(available.length===0){ruletaSeen=[];available=[...selectedTablas];}
+  const finalTabla=available[Math.floor(Math.random()*available.length)];
+  ruletaSeen.push(finalTabla);
+
+  let spins=0;
+  const iv=setInterval(()=>{
+    numEl.textContent=selectedTablas[Math.floor(Math.random()*selectedTablas.length)];
     spins++;
-    if(spins>20){
+    if(spins>=28){
       clearInterval(iv);
       numEl.classList.remove('spinning');
-      // show full table
-      const tabla = parseInt(numEl.textContent);
-      showTablaCompleta(tabla);
-      setTimeout(()=>{ btn.disabled=false; }, 2000);
+      numEl.textContent=finalTabla;
+      mostrarTabla(finalTabla);
     }
-  }, 80);
+  },70);
 }
 
-function showTablaCompleta(t){
-  let html = `<div style="font-family:'Fredoka One',cursive;font-size:1rem;text-align:center;margin-top:16px;color:var(--accent)">Tabla del ${t}</div>`;
-  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">`;
+function mostrarTabla(t){
+  const c=G('tablaCompleta');
+  c.innerHTML='';
   for(let i=1;i<=10;i++){
-    html += `<div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;text-align:center;font-weight:800;">${t} × ${i} = <span style="color:var(--green)">${t*i}</span></div>`;
+    const d=document.createElement('div');
+    d.className='tabla-fila';
+    d.style.setProperty('--i',i);
+    d.innerHTML=`${t} × ${i} = <span style="color:var(--green)">${t*i}</span>`;
+    c.appendChild(d);
   }
-  html += `</div>`;
-  document.getElementById('roulettePanel').innerHTML += html;
+  show('tablaCompleta');
+  show('ruletaOtraBtn');
+  show('ruletaFinBtn');
 }
 
-// ---- QUESTIONS ----
+// QUESTIONS
 function nextQuestion(){
-  if(selectedModo==='test' && qNum>=10){ showResults(); return; }
+  // Fin para modos con límite
+  if(selectedModo!=='carrera'&&qNum>=numPreguntas){showResults();return;}
 
   answered=false;
-  currentQ = generateQ();
+  currentQ=generateQ();
   qNum++;
-  updateScoreboard();
+  updateProgress();
 
-  const fb = document.getElementById('feedbackEl');
-  fb.className='feedback'; fb.style.display='none';
-  document.getElementById('nextBtn').className='next-btn';
+  // Reset UI
+  const fb=G('feedbackEl');
+  fb.className='d-none'; fb.textContent='';
+  hide('nextBtn');
 
-  // set question text
-  document.getElementById('questionText').innerHTML = currentQ.question.replace('?','<span class="blank">?</span>');
+  // Texto pregunta
+  G('questionText').innerHTML=currentQ.qText.replace('?','<span class="blank">?</span>');
 
-  // modo label
-  const labels = { adivina:'🔢 RESULTADO', factor:'❓ NÚMERO QUE FALTA', verdadero:'✅ VERDADERO O FALSO', test:'📝 TEST', carrera:'⏱️ CARRERA' };
-  document.getElementById('modoLabel').textContent = labels[selectedModo] || '🔢';
+  const labels={adivina:'🔢 ELIGE EL RESULTADO',factor:'❓ ¿QUÉ NÚMERO FALTA?',escribe:'✏️ ESCRIBE LA RESPUESTA',verdadero:'¿VERDADERO O FALSO?',carrera:'⏱️ ¡RÁPIDO!'};
+  G('modoLabel').textContent=labels[selectedModo]||'';
 
-  // show panels
   hide('opcionesPanel'); hide('inputPanel'); hide('tfPanel');
 
   if(currentQ.type==='choice'){
-    show('opcionesPanel');
-    const panel = document.getElementById('opcionesPanel');
-    panel.innerHTML='';
+    show('opcionesPanel','grid');
+    const p=G('opcionesPanel'); p.innerHTML='';
     currentQ.opts.forEach(opt=>{
-      const b = document.createElement('button');
-      b.className='opcion-btn';
-      b.textContent=opt;
-      b.onclick=()=>checkChoice(opt, b);
-      panel.appendChild(b);
+      const b=document.createElement('button');
+      b.className='opcion-btn'; b.textContent=opt;
+      b.onclick=()=>checkChoice(opt,b);
+      p.appendChild(b);
     });
+  } else if(currentQ.type==='input'){
+    show('inputPanel','flex');
+    const inp=G('answerInput');
+    inp.value=''; inp.className='answer-input'; inp.disabled=false;
+    setTimeout(()=>inp.focus(),50);
   } else if(currentQ.type==='tf'){
-    show('tfPanel');
-    document.querySelectorAll('.tf-btn').forEach(b=>{ b.className = 'tf-btn ' + (b.classList.contains('verdadero')?'verdadero':'falso'); b.disabled=false; });
-  } else {
-    show('inputPanel');
-    const inp = document.getElementById('answerInput');
-    inp.value=''; inp.className='answer-input'; inp.disabled=false; inp.focus();
+    show('tfPanel','flex');
+    ['tfTrue','tfFalse'].forEach(id=>{
+      const b=G(id); b.disabled=false;
+      b.className='tf-btn '+(id==='tfTrue'?'verdadero':'falso');
+    });
   }
 }
 
-function checkChoice(val, btn){
+function checkChoice(val,btn){
   if(answered) return;
   answered=true;
-  const correct = val===currentQ.answer;
-  if(correct){ score++; showFeedback(true); }
-  else { errors++; wrongAnswers.push(currentQ.question + ' (respuesta: '+currentQ.answer+')'); showFeedback(false); }
-
-  // mark buttons
+  const ok=val===currentQ.answer;
+  register(ok);
   document.querySelectorAll('.opcion-btn').forEach(b=>{
     b.disabled=true;
-    if(parseInt(b.textContent)===currentQ.answer) b.classList.add('correct');
-    else if(b===btn && !correct) b.classList.add('wrong');
+    // comparar como número para evitar fallos de tipo
+    if(Number(b.textContent)===currentQ.answer) b.classList.add('correct');
+    else if(b===btn&&!ok) b.classList.add('wrong');
   });
-
-  updateScoreboard();
-  if(selectedModo==='carrera'){ setTimeout(nextQuestion, 900); }
-  else { document.getElementById('nextBtn').className='next-btn show'; }
+  showFeedback(ok, ok?null:currentQ.answer);
+  if(selectedModo==='carrera'){
+    setTimeout(()=>{ if(timerLeft>0) nextQuestion(); },800);
+  } else { show('nextBtn'); }
 }
 
 function checkInput(){
   if(answered) return;
-  const val = parseInt(document.getElementById('answerInput').value);
+  const val=parseInt(G('answerInput').value);
   if(isNaN(val)) return;
   answered=true;
-  const inp = document.getElementById('answerInput');
-  inp.disabled=true;
-  const correct = val===currentQ.answer;
-  inp.className = 'answer-input ' + (correct?'correct':'wrong');
-  if(correct){ score++; showFeedback(true); }
-  else { errors++; wrongAnswers.push(currentQ.question+' (respuesta: '+currentQ.answer+')'); showFeedback(false,currentQ.answer); }
-  updateScoreboard();
-  document.getElementById('nextBtn').className='next-btn show';
+  G('answerInput').disabled=true;
+  const ok=val===currentQ.answer;
+  G('answerInput').className='answer-input '+(ok?'correct':'wrong');
+  register(ok);
+  showFeedback(ok, ok?null:currentQ.answer);
+  show('nextBtn');
 }
 
 function handleKey(e){ if(e.key==='Enter') checkInput(); }
@@ -857,91 +726,80 @@ function handleKey(e){ if(e.key==='Enter') checkInput(); }
 function checkTF(userAnswer){
   if(answered) return;
   answered=true;
-  const correct = userAnswer===currentQ.answer;
-  if(correct){ score++; showFeedback(true); }
-  else { errors++; wrongAnswers.push(currentQ.question.replace('?','').trim()+' ('+currentQ.realAnswer+')'); showFeedback(false, currentQ.realAnswer); }
-
-  document.querySelectorAll('.tf-btn').forEach(b=>{
-    b.disabled=true;
-    const isTrue = b.classList.contains('verdadero');
-    if(isTrue===currentQ.answer) b.classList.add('correct');
-    else if(isTrue===userAnswer && !correct) b.classList.add('wrong');
+  const ok=userAnswer===currentQ.answer;
+  register(ok);
+  ['tfTrue','tfFalse'].forEach(id=>{
+    const b=G(id); b.disabled=true;
+    const isVerd=id==='tfTrue';
+    if(isVerd===currentQ.answer) b.classList.add('correct');
+    else if(isVerd===userAnswer&&!ok) b.classList.add('wrong');
   });
-
-  updateScoreboard();
-  document.getElementById('nextBtn').className='next-btn show';
+  showFeedback(ok, ok?null:currentQ.realAnswer);
+  show('nextBtn');
 }
 
-function showFeedback(correct, rightAnswer){
-  const messages_ok = ['¡Genial! 🎉','¡Exacto! ⭐','¡Muy bien! 🚀','¡Correcto! 🏆','¡Eres un crack! 💪'];
-  const messages_err = ['¡Casi! 😅','¡Sigue intentando! 💪','Uy, error 😬','¡La próxima! 🌟'];
-  const fb = document.getElementById('feedbackEl');
-  fb.className = 'feedback show ' + (correct?'correct':'wrong');
-  if(correct){
-    fb.textContent = messages_ok[Math.floor(Math.random()*messages_ok.length)];
-    if(score % 5 === 0 && score>0) confetti();
-  } else {
-    fb.textContent = messages_err[Math.floor(Math.random()*messages_err.length)] + (rightAnswer!==undefined ? ` La respuesta era ${rightAnswer}` : '');
-  }
-  fb.style.display='block';
+function register(ok){
+  if(ok){ score++; }
+  else { errors++; wrongAnswers.push({q:currentQ.qText, a:currentQ.answer??currentQ.realAnswer}); }
+  G('scoreDisplay').textContent=score;
 }
 
-function updateScoreboard(){
-  document.getElementById('scoreDisplay').textContent = score;
-  if(selectedModo!=='carrera'){
-    const total = selectedModo==='test' ? 10 : Math.max(qNum,1);
-    document.getElementById('progressDisplay').textContent = `${qNum}/${total==='test'?10:total}`;
-    const pct = selectedModo==='test' ? (qNum/10)*100 : Math.min((qNum/(qNum+1))*100+5,95);
-    document.getElementById('progressBarFill').style.width = pct+'%';
-  }
+function showFeedback(ok, rightAnswer){
+  const oks=['¡Genial! 🎉','¡Exacto! ⭐','¡Muy bien! 🚀','¡Correcto! 🏆','¡Eres un crack! 💪'];
+  const errs=['¡Casi! 😅','¡Sigue intentando! 💪','Uy, error 😬','¡La próxima! 🌟'];
+  const fb=G('feedbackEl');
+  fb.className='feedback '+(ok?'correct':'feedback-wrong');
+  fb.textContent=ok
+    ? oks[Math.floor(Math.random()*oks.length)]
+    : errs[Math.floor(Math.random()*errs.length)]+(rightAnswer!=null?` La respuesta era ${rightAnswer}`:'');
+  if(ok&&score%5===0&&score>0) confetti();
 }
 
-// ---- RESULTS ----
+function updateProgress(){
+  if(selectedModo==='carrera') return;
+  G('progressDisplay').textContent=`${qNum}/${numPreguntas}`;
+  G('progressBarFill').style.width=`${Math.min((qNum/numPreguntas)*100,100)}%`;
+}
+
+// RESULTS
 function showResults(){
   clearInterval(timerInterval);
-  hide('gameScreen'); hide('homeScreen');
-  show('resultsScreen');
+  hide('gameScreen'); hide('homeScreen'); show('resultsScreen');
 
-  const total = score+errors;
-  const pct = total>0 ? Math.round(score/total*100) : 0;
-  document.getElementById('bigScore').textContent = pct+'%';
-  document.getElementById('bigScore').style.color = pct>=80?'var(--green)':pct>=50?'var(--accent)':'var(--red)';
-
-  const msgs = pct>=90?'¡Increíble! eres un genio 🌟':pct>=70?'¡Muy bien! 🏆':pct>=50?'¡Buen intento! 💪':'¡A seguir practicando! 📚';
-  document.getElementById('scoreMsg').textContent = msgs;
-
-  document.getElementById('correctCount').textContent = score;
-  document.getElementById('wrongCount').textContent = errors;
-  document.getElementById('correctBar').style.width = total>0 ? (score/total*100)+'%' : '0%';
-  document.getElementById('wrongBar').style.width = total>0 ? (errors/total*100)+'%' : '0%';
+  const total=score+errors;
+  const pct=total>0?Math.round(score/total*100):0;
+  G('bigScore').textContent=pct+'%';
+  G('bigScore').style.color=pct>=80?'var(--green)':pct>=50?'var(--accent)':'var(--red)';
+  G('scoreMsg').textContent=pct>=90?'¡Increíble! Eres un genio 🌟':pct>=70?'¡Muy bien! 🏆':pct>=50?'¡Buen intento! 💪':'¡A seguir practicando! 📚';
+  G('correctCount').textContent=score;
+  G('wrongCount').textContent=errors;
+  setTimeout(()=>{
+    G('correctBar').style.width=total>0?(score/total*100)+'%':'0%';
+    G('wrongBar').style.width=total>0?(errors/total*100)+'%':'0%';
+  },100);
 
   if(wrongAnswers.length>0){
-    let html = `<div style="font-size:0.85rem;font-weight:700;color:var(--text2);margin-bottom:8px;">Repasar estas:</div>`;
-    wrongAnswers.forEach(w=>{ html+=`<div style="background:rgba(247,37,133,0.08);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-weight:700;font-size:0.9rem;">${w}</div>`; });
-    document.getElementById('wrongList').innerHTML = html;
-  } else { document.getElementById('wrongList').innerHTML=''; }
-
+    let html=`<div style="font-size:0.85rem;font-weight:700;color:var(--text2);margin-bottom:8px;text-align:left;">📚 Repasar estas:</div>`;
+    wrongAnswers.forEach(w=>{
+      html+=`<div style="background:rgba(247,37,133,0.08);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-weight:700;font-size:0.9rem;text-align:left;">${w.q.replace('?','<span style="color:var(--accent)">?</span>')} → <span style="color:var(--green)">${w.a}</span></div>`;
+    });
+    G('wrongList').innerHTML=html;
+  } else { G('wrongList').innerHTML=''; }
   if(pct>=80) confetti();
 }
 
-// ---- NAV ----
 function goHome(){
   clearInterval(timerInterval);
   show('homeScreen'); hide('gameScreen'); hide('resultsScreen');
 }
 
-function show(id){ document.getElementById(id).style.display='block'; }
-function hide(id){ document.getElementById(id).style.display='none'; }
-
-// ---- CONFETTI ----
 function confetti(){
-  const colors = ['#f9c74f','#f3722c','#f72585','#43e97b','#4cc9f0','#b5179e','#fff'];
-  for(let i=0;i<50;i++){
-    const el = document.createElement('div');
-    el.className='confetti-piece';
-    el.style.cssText=`left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};--dur:${2+Math.random()*2}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()<0.5?'50%':'3px'};animation-delay:${Math.random()*0.5}s;`;
+  const cols=['#f9c74f','#f3722c','#f72585','#43e97b','#4cc9f0','#b5179e','#fff'];
+  for(let i=0;i<55;i++){
+    const el=document.createElement('div'); el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}vw;background:${cols[Math.floor(Math.random()*cols.length)]};--dur:${2+Math.random()*2}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()<0.5?'50%':'3px'};animation-delay:${Math.random()*0.5}s;`;
     document.body.appendChild(el);
-    setTimeout(()=>el.remove(), 4000);
+    setTimeout(()=>el.remove(),4500);
   }
 }
 </script>
