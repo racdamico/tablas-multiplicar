@@ -1,807 +1,829 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌟 Tablas de Multiplicar</title>
+<title>Unit 4 – We Improve Our Community</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0f0c29;
-    --card: rgba(255,255,255,0.07);
-    --border: rgba(255,255,255,0.15);
-    --accent: #f9c74f;
-    --accent2: #f3722c;
-    --green: #43e97b;
-    --red: #f72585;
-    --blue: #4cc9f0;
-    --purple: #b5179e;
-    --text: #fff;
-    --text2: rgba(255,255,255,0.65);
-    --radius: 18px;
-    --shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    min-height: 100vh;
-    color: var(--text);
-    overflow-x: hidden;
-    background-image:
-      radial-gradient(ellipse at 20% 20%, rgba(76,201,240,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(181,23,158,0.15) 0%, transparent 60%);
-  }
-  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-  .star {
-    position: absolute; border-radius: 50%; background: white;
-    animation: twinkle var(--d, 3s) ease-in-out infinite var(--delay, 0s);
-  }
-  @keyframes twinkle {
-    0%,100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.5); }
-  }
-  .app { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 20px 16px 60px; }
-
-  .header { text-align: center; padding: 30px 0 20px; }
-  .header h1 {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(2rem, 7vw, 3.2rem);
-    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--red));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    line-height: 1.1; margin-bottom: 6px;
-  }
-  .header p { color: var(--text2); font-size: 1rem; }
-
-  .card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 20px;
-    backdrop-filter: blur(12px); box-shadow: var(--shadow); margin-bottom: 18px;
-  }
-  .section-title {
-    font-family: 'Fredoka One', cursive; font-size: 1.1rem;
-    color: var(--accent); margin-bottom: 14px;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  /* TABLA SELECTOR */
-  .tabla-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  @media(min-width:400px) { .tabla-grid { grid-template-columns: repeat(5, 1fr); } }
-  .tabla-btn {
-    aspect-ratio: 1; border: 2px solid var(--border); border-radius: 14px;
-    background: transparent; color: var(--text);
-    font-family: 'Fredoka One', cursive; font-size: 1.5rem;
-    cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
-  }
-  .tabla-btn::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    opacity: 0; transition: opacity 0.2s;
-  }
-  .tabla-btn span { position: relative; z-index: 1; }
-  .tabla-btn.active { border-color: var(--accent); }
-  .tabla-btn.active::before { opacity: 1; }
-  .tabla-btn:hover:not(.active) { border-color: rgba(255,255,255,0.4); transform: scale(1.05); }
-
-  .select-all-row { display: flex; gap: 10px; margin-bottom: 12px; }
-  .chip {
-    padding: 7px 16px; border-radius: 30px; border: 1.5px solid var(--border);
-    background: transparent; color: var(--text2);
-    font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .chip:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* MODO */
-  .modos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media(min-width:480px) { .modos-grid { grid-template-columns: repeat(3, 1fr); } }
-  .modo-btn {
-    padding: 14px 10px; border-radius: 14px; border: 2px solid var(--border);
-    background: transparent; color: var(--text);
-    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.82rem;
-    cursor: pointer; transition: all 0.2s; text-align: center; line-height: 1.3;
-  }
-  .modo-btn .modo-icon { font-size: 1.6rem; display: block; margin-bottom: 5px; }
-  .modo-btn.active { border-color: var(--blue); background: rgba(76,201,240,0.15); }
-  .modo-btn:hover:not(.active) { border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
-
-  /* NUM PREGUNTAS */
-  .nq-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .nq-btn {
-    padding: 8px 18px; border-radius: 30px; border: 1.5px solid var(--border);
-    background: transparent; color: var(--text2);
-    font-family: 'Fredoka One', cursive; font-size: 1rem;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .nq-btn.active { border-color: var(--green); color: var(--green); background: rgba(67,233,123,0.1); }
-  .nq-btn:hover:not(.active) { border-color: rgba(255,255,255,0.3); color: var(--text); }
-  .nq-custom {
-    width: 70px; padding: 8px 10px; border-radius: 30px;
-    border: 1.5px solid var(--border); background: transparent; color: var(--text);
-    font-family: 'Fredoka One', cursive; font-size: 1rem; text-align: center; outline: none;
-  }
-  .nq-custom:focus { border-color: var(--green); }
-  .nq-note { font-size: 0.8rem; color: var(--text2); margin-top: 8px; }
-
-  .play-btn {
-    width: 100%; padding: 18px; border-radius: var(--radius); border: none;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    color: #1a0a00; font-family: 'Fredoka One', cursive; font-size: 1.4rem;
-    cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(249,199,79,0.35);
-  }
-  .play-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(249,199,79,0.5); }
-  .play-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-  /* GAME */
-  .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  .back-btn {
-    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-    color: var(--text2); padding: 8px 16px; cursor: pointer;
-    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.9rem; transition: all 0.2s;
-  }
-  .back-btn:hover { color: var(--text); }
-  .stats-row { display: flex; gap: 10px; align-items: center; }
-  .stat-badge {
-    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-    padding: 6px 12px; font-weight: 800; font-size: 0.9rem;
-  }
-  .stat-badge.timer { color: var(--accent); }
-  .stat-badge.score-s { color: var(--green); }
-  .stat-badge.prog { color: var(--blue); }
-
-  .progress-bar-wrap { height: 6px; background: rgba(255,255,255,0.1); border-radius: 30px; margin-bottom: 20px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--purple)); border-radius: 30px; transition: width 0.4s ease; }
-
-  .question-card {
-    text-align: center; padding: 36px 24px; margin-bottom: 0;
-    position: relative; overflow: hidden;
-  }
-  .question-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(76,201,240,0.08), rgba(181,23,158,0.08));
-    border-radius: var(--radius);
-  }
-  .modo-label {
-    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--blue); margin-bottom: 14px; position: relative;
-  }
-  .question-text {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(2.2rem, 9vw, 3.8rem);
-    line-height: 1; color: var(--text); position: relative;
-  }
-  .blank {
-    color: var(--accent); background: rgba(249,199,79,0.15);
-    border-bottom: 3px solid var(--accent); padding: 0 8px; border-radius: 6px;
-  }
-
-  .answer-panel { padding-top: 20px; }
-  .opciones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .opcion-btn {
-    padding: 18px; border-radius: 14px; border: 2px solid var(--border);
-    background: rgba(255,255,255,0.05); color: var(--text);
-    font-family: 'Fredoka One', cursive; font-size: 1.8rem;
-    cursor: pointer; transition: all 0.18s;
-  }
-  .opcion-btn:hover:not(:disabled) { border-color: var(--blue); background: rgba(76,201,240,0.12); transform: scale(1.03); }
-  .opcion-btn.correct { border-color: var(--green) !important; background: rgba(67,233,123,0.18) !important; color: var(--green); }
-  .opcion-btn.wrong { border-color: var(--red) !important; background: rgba(247,37,133,0.18) !important; color: var(--red); }
-  .opcion-btn:disabled { cursor: default; }
-
-  .input-row { display: flex; gap: 12px; align-items: center; }
-  .answer-input {
-    flex: 1; background: rgba(255,255,255,0.08); border: 2px solid var(--border);
-    border-radius: 14px; color: var(--text);
-    font-family: 'Fredoka One', cursive; font-size: 2rem;
-    padding: 16px 20px; text-align: center; outline: none; transition: border-color 0.2s;
-  }
-  .answer-input:focus { border-color: var(--blue); }
-  .answer-input.correct { border-color: var(--green); background: rgba(67,233,123,0.12); }
-  .answer-input.wrong { border-color: var(--red); background: rgba(247,37,133,0.12); }
-  .check-btn {
-    padding: 16px 24px; border-radius: 14px; border: none;
-    background: linear-gradient(135deg, var(--blue), var(--purple));
-    color: white; font-family: 'Fredoka One', cursive; font-size: 1.1rem;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .check-btn:hover { transform: scale(1.05); }
-
-  .tf-row { display: flex; gap: 14px; }
-  .tf-btn {
-    flex: 1; padding: 20px; border-radius: 14px; border: 2px solid var(--border);
-    background: transparent; font-family: 'Fredoka One', cursive; font-size: 1.3rem;
-    cursor: pointer; transition: all 0.2s; color: var(--text);
-  }
-  .tf-btn.verdadero:hover:not(:disabled) { border-color: var(--green); color: var(--green); }
-  .tf-btn.falso:hover:not(:disabled) { border-color: var(--red); color: var(--red); }
-  .tf-btn.correct { border-color: var(--green) !important; background: rgba(67,233,123,0.18) !important; color: var(--green) !important; }
-  .tf-btn.wrong { border-color: var(--red) !important; background: rgba(247,37,133,0.18) !important; color: var(--red) !important; }
-  .tf-btn:disabled { cursor: default; }
-
-  .feedback {
-    text-align: center; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
-    padding: 12px; border-radius: 12px; margin-top: 14px; animation: popIn 0.25s ease;
-  }
-  @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .feedback.correct { color: var(--green); background: rgba(67,233,123,0.1); }
-  .feedback.feedback-wrong { color: var(--red); background: rgba(247,37,133,0.1); }
-
-  .next-btn {
-    width: 100%; padding: 15px; border-radius: 14px; border: none;
-    background: linear-gradient(135deg, var(--green), #00c6c6);
-    color: #001a1a; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
-    cursor: pointer; transition: all 0.2s; margin-top: 14px;
-  }
-  .next-btn:hover { transform: translateY(-2px); }
-
-  /* RULETA */
-  .ruleta-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px 0 20px; }
-  .ruleta-num {
-    font-family: 'Fredoka One', cursive; font-size: 7rem;
-    color: var(--accent); text-shadow: 0 0 40px rgba(249,199,79,0.5); line-height: 1;
-  }
-  .ruleta-num.spinning { animation: rulspin 0.1s linear infinite; }
-  @keyframes rulspin { 0%,100%{transform:scale(1)}50%{transform:scale(1.12)} }
-  .spin-btn {
-    padding: 14px 32px; border-radius: 40px; border: none;
-    background: linear-gradient(135deg, var(--purple), var(--red));
-    color: white; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
-    cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(181,23,158,0.4);
-  }
-  .spin-btn:hover:not(:disabled) { transform: scale(1.05); }
-  .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .tabla-completa { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
-  .tabla-fila {
-    background: rgba(255,255,255,0.06); border-radius: 10px;
-    padding: 10px; text-align: center; font-weight: 800; font-size: 0.95rem;
-    animation: fadeIn 0.3s ease both; animation-delay: calc(var(--i) * 0.04s);
-  }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
-  .ruleta-action-btn {
-    width: 100%; padding: 15px; border-radius: 14px; border: none;
-    font-family: 'Fredoka One', cursive; font-size: 1.1rem;
-    cursor: pointer; transition: all 0.2s; margin-top: 10px;
-  }
-  .ruleta-action-btn.otra { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #1a0a00; }
-  .ruleta-action-btn.fin { background: linear-gradient(135deg, var(--purple), var(--blue)); color: white; }
-  .ruleta-action-btn:hover { transform: translateY(-2px); }
-
-  /* RESULTS */
-  .results-card { text-align: center; padding: 36px 24px; }
-  .big-score { font-family: 'Fredoka One', cursive; font-size: 5rem; line-height: 1; margin-bottom: 8px; }
-  .score-msg { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; }
-  .results-bars { margin: 20px 0; text-align: left; }
-  .result-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .result-label { width: 120px; font-weight: 700; font-size: 0.9rem; color: var(--text2); }
-  .result-bar-wrap { flex: 1; height: 12px; background: rgba(255,255,255,0.1); border-radius: 30px; overflow: hidden; }
-  .result-bar { height: 100%; border-radius: 30px; transition: width 1s ease; }
-  .result-bar.correct { background: linear-gradient(90deg, var(--green), #00c6c6); }
-  .result-bar.wrong { background: linear-gradient(90deg, var(--red), var(--purple)); }
-  .result-count { width: 32px; font-weight: 800; font-size: 0.9rem; text-align: right; }
-  .replay-btn {
-    padding: 16px 32px; border-radius: var(--radius); border: none;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #1a0a00; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
-    cursor: pointer; margin: 6px; transition: all 0.2s;
-  }
-  .replay-btn:hover { transform: scale(1.05); }
-  .replay-btn.secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
-
-  .confetti-piece {
-    position: fixed; border-radius: 2px; pointer-events: none; z-index: 9999;
-    animation: confettiFall var(--dur, 3s) linear forwards;
-  }
-  @keyframes confettiFall {
-    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
-
-  .d-none { display: none !important; }
+  :root{--purple:#7c3aed;--purple-light:#ede9fe;--orange:#f97316;--orange-light:#fff7ed;--green:#16a34a;--green-light:#dcfce7;--blue:#2563eb;--blue-light:#dbeafe;--pink:#db2777;--pink-light:#fce7f3;--yellow:#eab308;--yellow-light:#fef9c3;--red:#dc2626;--bg:#f5f3ff;--text:#1e1b4b;--muted:#6b7280;--radius:18px;--shadow:0 4px 24px rgba(124,58,237,0.10);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  header{background:linear-gradient(135deg,var(--purple) 0%,#a855f7 60%,var(--orange) 100%);padding:28px 24px 20px;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+  .header-title{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,5vw,2.6rem);color:white;text-shadow:0 2px 8px rgba(0,0,0,0.2);position:relative;}
+  .header-sub{color:rgba(255,255,255,0.88);font-size:1rem;font-weight:600;margin-top:4px;position:relative;}
+  .lang-bar{display:flex;justify-content:center;gap:10px;padding:14px;background:white;border-bottom:2px solid var(--purple-light);position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(124,58,237,0.08);}
+  .lang-btn{padding:7px 22px;border-radius:50px;border:2px solid var(--purple);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;transition:all 0.2s;background:white;color:var(--purple);}
+  .lang-btn.active{background:var(--purple);color:white;}
+  .score-bar{display:flex;justify-content:center;align-items:center;gap:18px;padding:10px 20px;background:var(--yellow-light);border-bottom:2px solid #fde68a;flex-wrap:wrap;}
+  .score-display{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--orange);display:flex;align-items:center;gap:6px;}
+  .stars-display{font-size:1.3rem;letter-spacing:2px;}
+  .reset-btn{padding:5px 16px;border-radius:50px;border:2px solid var(--orange);background:white;color:var(--orange);font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+  .reset-btn:hover{background:var(--orange);color:white;}
+  .nav-tabs{display:flex;gap:8px;padding:16px 20px 0;overflow-x:auto;scrollbar-width:none;background:white;}
+  .nav-tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:9px 18px;border-radius:14px 14px 0 0;border:2px solid transparent;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.88rem;cursor:pointer;white-space:nowrap;transition:all 0.2s;background:var(--purple-light);color:var(--purple);}
+  .tab-btn.active{background:var(--purple);color:white;border-color:var(--purple);}
+  .tab-btn:hover:not(.active){background:#ddd6fe;}
+  main{max-width:900px;margin:0 auto;padding:24px 16px 60px;}
+  .section-panel{display:none;}
+  .section-panel.active{display:block;}
+  /* INTRO */
+  .topic-intro{background:white;border-radius:var(--radius);padding:20px 24px;margin-bottom:22px;box-shadow:var(--shadow);border-left:6px solid var(--purple);}
+  .topic-intro h2{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--purple);margin-bottom:10px;}
+  .topic-intro p{font-size:0.97rem;line-height:1.75;color:#374151;margin-bottom:10px;}
+  .topic-intro p:last-child{margin-bottom:0;}
+  .vocab-box{background:var(--purple-light);border-radius:12px;padding:12px 16px;margin-top:12px;}
+  .vocab-box strong{color:var(--purple);font-size:0.85rem;display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;}
+  .vocab-pills{display:flex;flex-wrap:wrap;gap:7px;}
+  .vocab-pill{background:var(--purple);color:white;border-radius:50px;padding:5px 13px;font-size:0.82rem;font-weight:700;}
+  .vocab-pill span{color:rgba(255,255,255,0.72);font-weight:400;margin-left:4px;}
+  /* ACTIVITY */
+  .activity-card{background:white;border-radius:var(--radius);padding:22px 24px;margin-bottom:20px;box-shadow:var(--shadow);}
+  .activity-title{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .activity-badge{display:inline-block;padding:3px 12px;border-radius:50px;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;}
+  .badge-quiz{background:var(--blue-light);color:var(--blue);}
+  .badge-drag{background:var(--green-light);color:var(--green);}
+  .badge-fill{background:var(--orange-light);color:var(--orange);}
+  .badge-word{background:var(--pink-light);color:var(--pink);}
+  /* QUIZ */
+  .quiz-question{font-weight:700;font-size:1rem;margin-bottom:12px;}
+  .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  @media(max-width:500px){.quiz-options{grid-template-columns:1fr;}}
+  .quiz-opt{padding:11px 14px;border-radius:12px;border:2.5px solid #e5e7eb;background:#f9fafb;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.93rem;cursor:pointer;transition:all 0.18s;text-align:left;}
+  .quiz-opt:hover:not(:disabled){border-color:var(--purple);background:var(--purple-light);}
+  .quiz-opt.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+  .quiz-opt.wrong{border-color:var(--red);background:#fee2e2;color:var(--red);}
+  .quiz-opt:disabled{cursor:default;}
+  .quiz-feedback{font-weight:700;font-size:0.95rem;min-height:22px;margin-bottom:8px;}
+  .quiz-feedback.ok{color:var(--green);}.quiz-feedback.ko{color:var(--red);}
+  .next-btn{padding:8px 22px;border-radius:50px;border:none;background:var(--purple);color:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;cursor:pointer;display:none;transition:background 0.2s;}
+  .next-btn:hover{background:#6d28d9;}.next-btn.show{display:inline-block;}
+  .progress-bar{height:8px;background:#e5e7eb;border-radius:50px;overflow:hidden;margin-bottom:12px;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--orange));border-radius:50px;transition:width 0.4s;}
+  /* DRAG */
+  .drag-instruction{font-size:0.92rem;color:var(--muted);font-weight:600;margin-bottom:14px;}
+  .drag-items{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:18px;}
+  .drag-chip{padding:8px 16px;border-radius:50px;background:var(--purple);color:white;font-weight:800;font-size:0.88rem;cursor:grab;user-select:none;transition:transform 0.15s,opacity 0.15s;}
+  .drag-chip:active{cursor:grabbing;transform:scale(1.06);}
+  .drag-chip.used{opacity:0.35;cursor:not-allowed;}
+  .drag-zones{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:480px){.drag-zones{grid-template-columns:1fr;}}
+  .drag-zone{min-height:70px;border:2.5px dashed #c4b5fd;border-radius:14px;padding:12px 14px;background:var(--purple-light);transition:border-color 0.2s,background 0.2s;}
+  .drag-zone.over{border-color:var(--purple);background:#ddd6fe;}
+  .drag-zone.correct-zone{border-color:var(--green);background:var(--green-light);}
+  .drag-zone-label{font-weight:800;font-size:0.9rem;color:var(--purple);margin-bottom:8px;}
+  .drag-zone-content{display:flex;flex-wrap:wrap;gap:6px;min-height:28px;}
+  .dropped-chip{padding:5px 13px;border-radius:50px;background:var(--purple);color:white;font-weight:700;font-size:0.83rem;display:flex;align-items:center;gap:5px;}
+  .dropped-chip .remove{font-size:1rem;line-height:1;cursor:pointer;}
+  .check-btn{margin-top:14px;padding:9px 24px;border-radius:50px;border:none;background:var(--green);color:white;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.93rem;cursor:pointer;transition:background 0.2s;}
+  .check-btn:hover{background:#15803d;}
+  /* FILL */
+  .fill-sentence{font-size:1rem;font-weight:600;line-height:2.5;margin-bottom:14px;}
+  .fill-blank{display:inline-block;min-width:90px;border:none;border-bottom:3px solid var(--purple);background:transparent;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.95rem;padding:2px 6px;color:var(--text);outline:none;text-align:center;transition:border-color 0.2s;}
+  .fill-blank:focus{border-color:var(--orange);}
+  .fill-blank.correct-fill{border-color:var(--green);color:var(--green);background:var(--green-light);border-radius:6px;}
+  .fill-blank.wrong-fill{border-color:var(--red);color:var(--red);background:#fee2e2;border-radius:6px;}
+  .hint-banner{background:var(--yellow-light);border:1.5px solid #fde68a;border-radius:10px;padding:8px 14px;font-size:0.86rem;font-weight:700;color:#92400e;margin-bottom:14px;}
+  /* WORD SEARCH */
+  .word-search-wrap{overflow-x:auto;}
+  .word-grid{display:inline-grid;gap:3px;margin-bottom:16px;}
+  .ws-cell{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1rem;border-radius:7px;cursor:pointer;user-select:none;background:var(--purple-light);color:var(--purple);transition:background 0.15s;border:2px solid transparent;}
+  .ws-cell:hover{background:#ddd6fe;}
+  .ws-cell.selected{background:var(--yellow);color:var(--text);border-color:var(--orange);}
+  .ws-cell.found{background:var(--green);color:white;border-color:var(--green);}
+  .ws-words{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .ws-word{padding:5px 13px;border-radius:50px;border:2px solid var(--purple);font-weight:800;font-size:0.82rem;color:var(--purple);background:white;}
+  .ws-word small{display:block;font-weight:400;font-size:0.72rem;color:var(--muted);}
+  .ws-word.found-word{background:var(--green);border-color:var(--green);color:white;text-decoration:line-through;}
+  .ws-word.found-word small{color:rgba(255,255,255,0.75);}
+  /* POPUP */
+  .feedback-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.7);background:white;border-radius:24px;padding:32px 40px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.18);z-index:1000;opacity:0;pointer-events:none;transition:all 0.25s cubic-bezier(.34,1.56,.64,1);}
+  .feedback-popup.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1);}
+  .feedback-popup .emoji{font-size:3rem;margin-bottom:8px;}
+  .feedback-popup .msg{font-family:'Fredoka One',cursive;font-size:1.5rem;}
+  .feedback-popup .pts{font-size:1.1rem;font-weight:700;color:var(--orange);margin-top:6px;}
+  @media(max-width:600px){.activity-card{padding:16px;}.quiz-options{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
-
-<div class="app">
-
-  <!-- ===== HOME ===== -->
-  <div id="homeScreen">
-    <div class="header">
-      <h1>🌟 Tablas de Multiplicar</h1>
-      <p>¡A por todas las tablas, campeón!</p>
-    </div>
-
-    <div class="card">
-      <div class="section-title">📋 Elige las tablas</div>
-      <div class="select-all-row">
-        <button class="chip" onclick="selectAll()">Todas</button>
-        <button class="chip" onclick="selectNone()">Ninguna</button>
-      </div>
-      <div class="tabla-grid" id="tablaGrid"></div>
-    </div>
-
-    <div class="card">
-      <div class="section-title">🎮 Elige el modo</div>
-      <div class="modos-grid">
-        <button class="modo-btn active" data-modo="adivina" onclick="selectModo(this)">
-          <span class="modo-icon">🔢</span>Adivina el resultado
-        </button>
-        <button class="modo-btn" data-modo="factor" onclick="selectModo(this)">
-          <span class="modo-icon">❓</span>¿Qué número falta?
-        </button>
-        <button class="modo-btn" data-modo="escribe" onclick="selectModo(this)">
-          <span class="modo-icon">✏️</span>Escribe la respuesta
-        </button>
-        <button class="modo-btn" data-modo="verdadero" onclick="selectModo(this)">
-          <span class="modo-icon">✅</span>Verdadero o Falso
-        </button>
-        <button class="modo-btn" data-modo="carrera" onclick="selectModo(this)">
-          <span class="modo-icon">⏱️</span>Carrera 60 seg.
-        </button>
-        <button class="modo-btn" data-modo="ruleta" onclick="selectModo(this)">
-          <span class="modo-icon">🎯</span>Ruleta de tablas
-        </button>
-      </div>
-    </div>
-
-    <div class="card" id="numPreguntasCard">
-      <div class="section-title">🔢 ¿Cuántas preguntas?</div>
-      <div class="nq-row">
-        <button class="nq-btn active" data-n="5" onclick="selectNQ(this)">5</button>
-        <button class="nq-btn" data-n="10" onclick="selectNQ(this)">10</button>
-        <button class="nq-btn" data-n="15" onclick="selectNQ(this)">15</button>
-        <button class="nq-btn" data-n="20" onclick="selectNQ(this)">20</button>
-        <input type="number" class="nq-custom" id="nqCustom" min="1" max="50" placeholder="…" oninput="customNQ(this)">
-      </div>
-      <div class="nq-note">Máximo 50 preguntas</div>
-    </div>
-
-    <button class="play-btn" id="playBtn" onclick="startGame()">¡JUGAR! 🚀</button>
-  </div>
-
-  <!-- ===== GAME ===== -->
-  <div id="gameScreen" class="d-none">
-    <div class="game-header">
-      <button class="back-btn" onclick="goHome()">← Menú</button>
-      <div class="stats-row">
-        <div class="stat-badge timer d-none" id="timerBadge">⏱️ <span id="timerDisplay">60</span>s</div>
-        <div class="stat-badge score-s">✅ <span id="scoreDisplay">0</span></div>
-        <div class="stat-badge prog" id="progressBadge">📊 <span id="progressDisplay">0/5</span></div>
-      </div>
-    </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progressBarFill" style="width:0%"></div>
-    </div>
-
-    <!-- RULETA PANEL -->
-    <div id="roulettePanel" class="d-none">
-      <div class="card">
-        <div class="section-title">🎯 Ruleta de tablas</div>
-        <div class="ruleta-wrap">
-          <div style="color:var(--text2);font-weight:700;font-size:0.95rem;">Tabla del...</div>
-          <div class="ruleta-num" id="ruletaNum">?</div>
-          <button class="spin-btn" id="spinBtn" onclick="spinRuleta()">🎲 ¡Girar!</button>
-        </div>
-        <div class="tabla-completa d-none" id="tablaCompleta"></div>
-        <button class="ruleta-action-btn otra d-none" id="ruletaOtraBtn" onclick="resetRuleta()">🔄 Otra tabla</button>
-        <button class="ruleta-action-btn fin d-none" id="ruletaFinBtn" onclick="goHome()">🏠 Terminar</button>
-      </div>
-    </div>
-
-    <!-- QUESTION PANEL -->
-    <div id="questionPanel" class="d-none">
-      <div class="card question-card">
-        <div class="modo-label" id="modoLabel"></div>
-        <div class="question-text" id="questionText"></div>
-      </div>
-      <div class="card answer-panel">
-        <div id="opcionesPanel" class="opciones-grid d-none"></div>
-        <div id="inputPanel" class="input-row d-none">
-          <input type="number" class="answer-input" id="answerInput" placeholder="?" min="0" max="100" onkeydown="handleKey(event)">
-          <button class="check-btn" onclick="checkInput()">✓</button>
-        </div>
-        <div id="tfPanel" class="tf-row d-none">
-          <button class="tf-btn verdadero" id="tfTrue" onclick="checkTF(true)">✅ Verdadero</button>
-          <button class="tf-btn falso" id="tfFalse" onclick="checkTF(false)">❌ Falso</button>
-        </div>
-        <div id="feedbackEl" class="d-none"></div>
-        <button class="next-btn d-none" id="nextBtn" onclick="nextQuestion()">Siguiente →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== RESULTS ===== -->
-  <div id="resultsScreen" class="d-none">
-    <div class="header"><h1>🏆 Resultado</h1></div>
-    <div class="card results-card">
-      <div class="big-score" id="bigScore"></div>
-      <div class="score-msg" id="scoreMsg"></div>
-      <div class="results-bars">
-        <div class="result-row">
-          <div class="result-label">✅ Correctas</div>
-          <div class="result-bar-wrap"><div class="result-bar correct" id="correctBar" style="width:0%"></div></div>
-          <div class="result-count" id="correctCount">0</div>
-        </div>
-        <div class="result-row">
-          <div class="result-label">❌ Errores</div>
-          <div class="result-bar-wrap"><div class="result-bar wrong" id="wrongBar" style="width:0%"></div></div>
-          <div class="result-count" id="wrongCount">0</div>
-        </div>
-      </div>
-      <div id="wrongList"></div>
-      <br>
-      <button class="replay-btn" onclick="startGame()">🔄 Otra vez</button>
-      <button class="replay-btn secondary" onclick="goHome()">🏠 Menú</button>
-    </div>
-  </div>
-
+<div class="feedback-popup" id="feedbackPopup">
+  <div class="emoji" id="feedbackEmoji">🌟</div>
+  <div class="msg" id="feedbackMsg">Correct!</div>
+  <div class="pts" id="feedbackPts">+points</div>
 </div>
 
+<header>
+  <div class="header-title">🏘️ <span id="hTitle">We Improve Our Community</span></div>
+  <div class="header-sub" id="hSub">Unit 4 · Social Science · 3rd Grade</div>
+</header>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">🇬🇧 English</button>
+  <button class="lang-btn" onclick="setLang('es')">🇪🇸 Español</button>
+</div>
+<div class="score-bar">
+  <div class="score-display">⭐ <span id="totalScore">0</span> <span id="ptsLabel">points</span></div>
+  <div class="stars-display" id="starsDisplay">☆☆☆☆☆</div>
+  <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+</div>
+
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="showSection(0)">🏡 <span class="tl" data-en="Villages" data-es="Pueblos">Villages</span></button>
+  <button class="tab-btn" onclick="showSection(1)">🏙️ <span class="tl" data-en="Towns & Cities" data-es="Ciudades">Towns & Cities</span></button>
+  <button class="tab-btn" onclick="showSection(2)">🏛️ <span class="tl" data-en="Local Council" data-es="Ayuntamiento">Local Council</span></button>
+  <button class="tab-btn" onclick="showSection(3)">🚌 <span class="tl" data-en="Local Services" data-es="Servicios">Local Services</span></button>
+  <button class="tab-btn" onclick="showSection(4)">💰 <span class="tl" data-en="Taxes" data-es="Impuestos">Taxes</span></button>
+  <button class="tab-btn" onclick="showSection(5)">🔤 <span class="tl" data-en="Word Search" data-es="Sopa de letras">Word Search</span></button>
+</div>
+
+<main>
+
+<!-- SECTION 0: VILLAGES -->
+<div class="section-panel active" id="sec0">
+  <div class="topic-intro">
+    <h2>🏡 <span class="tl" data-en="What are villages like?" data-es="¿Cómo son los pueblos?">What are villages like?</span></h2>
+    <p class="tl"
+      data-en="People live together in places called <b>settlements</b>. A settlement has houses, streets and buildings. The number of people who live there is the <b>population</b>."
+      data-es="Las personas viven juntas en lugares llamados <b>núcleos de población</b>. Un núcleo tiene casas, calles y edificios. El número de personas que viven allí es la <b>población</b>.">
+      People live together in places called <b>settlements</b>. A settlement has houses, streets and buildings. The number of people who live there is the <b>population</b>.
+    </p>
+    <p class="tl"
+      data-en="A <b>village</b> is a small settlement with a small population. In the <b>centre</b> there is a <b>main square</b>. The <b>town hall</b> and the <b>church</b> are there. Streets are <b>short and narrow</b>. Buildings are <b>low</b> — one or two floors. One family usually lives in each house. There are few services — no big hospitals, for example."
+      data-es="Un <b>pueblo</b> es un núcleo pequeño con poca población. En el <b>centro</b> hay una <b>plaza mayor</b>. El <b>ayuntamiento</b> y la <b>iglesia</b> están allí. Las calles son <b>cortas y estrechas</b>. Los edificios son <b>bajos</b> — de uno o dos pisos. Normalmente una familia vive en cada casa. Hay pocos servicios — sin grandes hospitales, por ejemplo.">
+      A <b>village</b> is a small settlement with a small population. In the <b>centre</b> there is a <b>main square</b>. The <b>town hall</b> and the <b>church</b> are there. Streets are <b>short and narrow</b>. Buildings are <b>low</b>. There are few services.
+    </p>
+    <p class="tl"
+      data-en="There are <b>3 types</b> of village: 🏔️ <b>Tourist villages</b> — in the mountains or by the sea, with hotels and restaurants for tourists. 🏭 <b>Industrial villages</b> — have factories and farms, bigger population, more services. 🌾 <b>Small villages</b> — get smaller over time because young people leave to study or work in the city. Some villages are completely abandoned!"
+      data-es="Hay <b>3 tipos</b> de pueblo: 🏔️ <b>Pueblos turísticos</b> — en la montaña o junto al mar, con hoteles y restaurantes para turistas. 🏭 <b>Pueblos industriales</b> — tienen fábricas y granjas, más población y más servicios. 🌾 <b>Pueblos pequeños</b> — se hacen más pequeños con el tiempo porque los jóvenes se van a estudiar o trabajar a la ciudad. ¡Algunos pueblos están completamente abandonados!">
+      <b>3 types:</b> 🏔️ <b>Tourist villages</b> — mountains or sea, hotels and restaurants. 🏭 <b>Industrial villages</b> — factories and farms, more services. 🌾 <b>Small villages</b> — shrink because young people leave to work in cities.
+    </p>
+    <div class="vocab-box">
+      <strong class="tl" data-en="🔑 Key Words" data-es="🔑 Palabras clave">🔑 Key Words</strong>
+      <div class="vocab-pills">
+        <div class="vocab-pill">village <span>= pueblo</span></div>
+        <div class="vocab-pill">population <span>= población</span></div>
+        <div class="vocab-pill">main square <span>= plaza mayor</span></div>
+        <div class="vocab-pill">town hall <span>= ayuntamiento</span></div>
+        <div class="vocab-pill">settlement <span>= núcleo de población</span></div>
+        <div class="vocab-pill">narrow <span>= estrecho</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-quiz">Quiz</span>
+      <span class="tl" data-en="Villages Quiz (6 questions)" data-es="Quiz sobre pueblos (6 preguntas)">Villages Quiz (6 questions)</span></div>
+    <div id="v_quiz_container"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-drag">Drag & Drop</span>
+      <span class="tl" data-en="Sort: tourist or industrial village?" data-es="Clasifica: ¿pueblo turístico o industrial?">Sort: tourist or industrial village?</span></div>
+    <p class="drag-instruction tl" data-en="📱 On mobile: tap a card (it glows orange) then tap the correct box. On computer: drag and drop!" data-es="📱 En móvil: toca una tarjeta (se pone naranja) y luego toca la caja correcta. ¡En el ordenador: arrastra y suelta!">📱 Tap a card then tap the correct box. On computer: drag and drop!</p>
+    <div class="drag-items" id="vDragItems"></div>
+    <div class="drag-zones" id="vDragZones"></div>
+    <button class="check-btn" onclick="checkDrag('v')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="vDragFeedback"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-fill">Fill in the blanks</span>
+      <span class="tl" data-en="Complete the sentences" data-es="Completa las frases">Complete the sentences</span></div>
+    <div class="hint-banner tl" data-en="💡 Tips: singular or plural are both fine (beach/beaches). Numbers: write 4 or four — both work!" data-es="💡 Consejos: singular o plural ambos son correctos. Números: escribe 4 o cuatro — ¡los dos valen!">💡 Tips: singular or plural are both fine. Numbers: write 4 or four — both work!</div>
+    <div id="vFillContainer"></div>
+    <button class="check-btn" onclick="checkFill('v')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="vFillFeedback"></div>
+  </div>
+</div>
+
+<!-- SECTION 1: TOWNS & CITIES -->
+<div class="section-panel" id="sec1">
+  <div class="topic-intro">
+    <h2>🏙️ <span class="tl" data-en="What are towns and cities like?" data-es="¿Cómo son los pueblos grandes y las ciudades?">What are towns and cities like?</span></h2>
+    <p class="tl"
+      data-en="<b>Towns</b> and <b>cities</b> are large settlements with a <b>large population</b>. Towns are smaller than cities. Cities have hospitals, universities, offices, banks, theatres and cinemas. People come from different countries and cultures to live in cities."
+      data-es="Los <b>pueblos grandes</b> y las <b>ciudades</b> son núcleos de población con mucha gente. Los pueblos grandes son más pequeños que las ciudades. Las ciudades tienen hospitales, universidades, oficinas, bancos, teatros y cines. Gente de diferentes países y culturas viene a vivir en las ciudades.">
+      <b>Towns</b> and <b>cities</b> are large settlements with a <b>large population</b>. Cities have hospitals, universities, offices, theatres and cinemas.
+    </p>
+    <p class="tl"
+      data-en="Cities have <b>3 parts</b>: 🏛️ <b>Historic centre</b> — the oldest part. Narrow streets, low buildings, monuments and museums. 🏢 <b>Modern district</b> — surrounds the historic centre. Wide streets, tall buildings, offices and shops. 🏘️ <b>Suburbs</b> — new residential areas far from the centre. Houses, shopping centres, factories."
+      data-es="Las ciudades tienen <b>3 partes</b>: 🏛️ <b>Centro histórico</b> — la parte más antigua. Calles estrechas, edificios bajos, monumentos y museos. 🏢 <b>Barrio moderno</b> — rodea al centro histórico. Calles anchas, edificios altos, oficinas y tiendas. 🏘️ <b>Barrios periféricos</b> — zonas residenciales nuevas lejos del centro. Casas, centros comerciales, fábricas.">
+      <b>3 parts:</b> 🏛️ <b>Historic centre</b> — old, narrow streets, monuments. 🏢 <b>Modern district</b> — wide streets, tall buildings. 🏘️ <b>Suburbs</b> — houses, shopping centres, far from centre.
+    </p>
+    <p class="tl"
+      data-en="✅ <b>Advantages:</b> many services (hospitals, universities), many jobs, different cultures. ❌ <b>Disadvantages:</b> 🚗 Traffic jams — too many cars! 💨 Pollution — dirty air from car emissions. 😔 Loneliness — people can feel alone even in a crowd. 💡 <b>Solutions:</b> use public transport (buses, metro), use zero-emission vehicles like bicycles 🚲, and create support services for people who feel lonely."
+      data-es="✅ <b>Ventajas:</b> muchos servicios (hospitales, universidades), muchos trabajos, diferentes culturas. ❌ <b>Desventajas:</b> 🚗 Atascos — ¡demasiados coches! 💨 Contaminación — aire sucio por los escapes de los coches. 😔 Soledad — las personas pueden sentirse solas aunque haya mucha gente. 💡 <b>Soluciones:</b> usar el transporte público (autobuses, metro), usar vehículos de cero emisiones como las bicicletas 🚲, y crear servicios de apoyo para quienes se sienten solos.">
+      ✅ <b>Advantages:</b> services, jobs, different cultures. ❌ <b>Disadvantages:</b> traffic jams, pollution, loneliness. 💡 <b>Solutions:</b> public transport, bicycles, support services.
+    </p>
+    <div class="vocab-box">
+      <strong class="tl" data-en="🔑 Key Words" data-es="🔑 Palabras clave">🔑 Key Words</strong>
+      <div class="vocab-pills">
+        <div class="vocab-pill">historic centre <span>= centro histórico</span></div>
+        <div class="vocab-pill">modern district <span>= barrio moderno</span></div>
+        <div class="vocab-pill">suburb <span>= barrio periférico</span></div>
+        <div class="vocab-pill">traffic jam <span>= atasco</span></div>
+        <div class="vocab-pill">pollution <span>= contaminación</span></div>
+        <div class="vocab-pill">zero-emission <span>= cero emisiones</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-quiz">Quiz</span>
+      <span class="tl" data-en="Towns & Cities Quiz (6 questions)" data-es="Quiz sobre ciudades (6 preguntas)">Towns & Cities Quiz (6 questions)</span></div>
+    <div id="c_quiz_container"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-drag">Drag & Drop</span>
+      <span class="tl" data-en="Match features to city areas" data-es="Relaciona con la zona de la ciudad">Match features to city areas</span></div>
+    <p class="drag-instruction tl" data-en="📱 Tap a card then tap the correct box. On computer: drag and drop!" data-es="📱 Toca una tarjeta y luego la caja correcta. ¡En el ordenador: arrastra y suelta!">📱 Tap a card then tap the correct box.</p>
+    <div class="drag-items" id="cDragItems"></div>
+    <div class="drag-zones" id="cDragZones"></div>
+    <button class="check-btn" onclick="checkDrag('c')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="cDragFeedback"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-fill">Fill in the blanks</span>
+      <span class="tl" data-en="Complete the sentences" data-es="Completa las frases">Complete the sentences</span></div>
+    <div class="hint-banner tl" data-en="💡 'jam' or 'jams', 'building' or 'buildings' — both are accepted!" data-es="💡 ¡Singular o plural — las dos formas son válidas!">💡 'jam' or 'jams', 'building' or 'buildings' — both are accepted!</div>
+    <div id="cFillContainer"></div>
+    <button class="check-btn" onclick="checkFill('c')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="cFillFeedback"></div>
+  </div>
+</div>
+
+<!-- SECTION 2: LOCAL COUNCIL -->
+<div class="section-panel" id="sec2">
+  <div class="topic-intro">
+    <h2>🏛️ <span class="tl" data-en="What is the local council?" data-es="¿Qué es el ayuntamiento?">What is the local council?</span></h2>
+    <p class="tl"
+      data-en="Every village, town or city is a <b>municipality</b>. It is made of the buildings, the people and the land around it. Every municipality has a <b>local council</b> — it is the government that represents all the people."
+      data-es="Cada pueblo o ciudad es un <b>municipio</b>. Está formado por los edificios, las personas y el territorio que lo rodea. Cada municipio tiene un <b>ayuntamiento</b> — es el gobierno que representa a todas las personas.">
+      Every village, town or city is a <b>municipality</b>. It has a <b>local council</b> — the government that represents all the people.
+    </p>
+    <p class="tl"
+      data-en="The people who work in the local council are <b>councillors</b>. The head is the <b>mayor</b>. The mayor and councillors organise the municipality and solve community problems. They work in the <b>town hall</b> building."
+      data-es="Las personas que trabajan en el ayuntamiento son los <b>concejales</b>. El jefe es el <b>alcalde</b> (o la <b>alcaldesa</b>). El alcalde y los concejales organizan el municipio y resuelven los problemas de la comunidad. Trabajan en el edificio del <b>ayuntamiento</b> (casa consistorial).">
+      The workers are <b>councillors</b>. The head is the <b>mayor</b>. They work in the <b>town hall</b>.
+    </p>
+    <p class="tl"
+      data-en="How to be a <b>responsible citizen</b>: 🗳️ <b>Vote in elections!</b> People over 18 years old vote every <b>4 years</b> to choose the councillors and the mayor. 🤝 <b>Join local associations</b> to help solve problems in the community. 📋 <b>Respect the laws:</b> don't drop litter in the street, respect road safety rules, and always clean up after your dog! 🐕"
+      data-es="Cómo ser un <b>ciudadano responsable</b>: 🗳️ ¡<b>Vota en las elecciones!</b> Las personas mayores de 18 años votan cada <b>4 años</b> para elegir a los concejales y al alcalde. 🤝 <b>Únete a asociaciones locales</b> para ayudar a resolver problemas en la comunidad. 📋 <b>Respeta las leyes:</b> no tires basura en la calle, respeta las normas de tráfico y ¡siempre limpia lo que hace tu perro! 🐕">
+      Be a <b>responsible citizen</b>: 🗳️ Vote every <b>4 years</b>. 🤝 Join local associations. 📋 Respect the laws — no litter, road safety, clean after your dog! 🐕
+    </p>
+    <div class="vocab-box">
+      <strong class="tl" data-en="🔑 Key Words" data-es="🔑 Palabras clave">🔑 Key Words</strong>
+      <div class="vocab-pills">
+        <div class="vocab-pill">municipality <span>= municipio</span></div>
+        <div class="vocab-pill">local council <span>= ayuntamiento</span></div>
+        <div class="vocab-pill">mayor <span>= alcalde/alcaldesa</span></div>
+        <div class="vocab-pill">councillor <span>= concejal</span></div>
+        <div class="vocab-pill">election <span>= elección</span></div>
+        <div class="vocab-pill">town hall <span>= casa consistorial</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-quiz">Quiz</span>
+      <span class="tl" data-en="Local Council Quiz (6 questions)" data-es="Quiz ayuntamiento (6 preguntas)">Local Council Quiz (6 questions)</span></div>
+    <div id="lc_quiz_container"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-drag">Drag & Drop</span>
+      <span class="tl" data-en="Mayor or local council?" data-es="¿Alcalde o ayuntamiento?">Mayor or local council?</span></div>
+    <p class="drag-instruction tl" data-en="📱 Tap a card then tap the correct box." data-es="📱 Toca una tarjeta y luego la caja correcta.">📱 Tap a card then tap the correct box.</p>
+    <div class="drag-items" id="lcDragItems"></div>
+    <div class="drag-zones" id="lcDragZones"></div>
+    <button class="check-btn" onclick="checkDrag('lc')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="lcDragFeedback"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-fill">Fill in the blanks</span>
+      <span class="tl" data-en="Complete the sentences" data-es="Completa las frases">Complete the sentences</span></div>
+    <div class="hint-banner tl" data-en="💡 You can write '4' or 'four' — both are correct!" data-es="💡 Puedes escribir '4' o 'cuatro' — ¡los dos son correctos!">💡 You can write '4' or 'four' — both are correct!</div>
+    <div id="lcFillContainer"></div>
+    <button class="check-btn" onclick="checkFill('lc')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="lcFillFeedback"></div>
+  </div>
+</div>
+
+<!-- SECTION 3: LOCAL SERVICES -->
+<div class="section-panel" id="sec3">
+  <div class="topic-intro">
+    <h2>🚌 <span class="tl" data-en="What are local services?" data-es="¿Qué son los servicios locales?">What are local services?</span></h2>
+    <p class="tl"
+      data-en="The local council organises <b>local services</b>. These are services that <b>all citizens</b> use in their municipality. Each service has a different team of workers. We must look after and respect them — they are for everyone!"
+      data-es="El ayuntamiento organiza los <b>servicios locales</b>. Son servicios que <b>todos los ciudadanos</b> usan en su municipio. Cada servicio tiene un equipo diferente de trabajadores. ¡Debemos cuidarlos y respetarlos — son para todos!">
+      The local council organises <b>local services</b> for all citizens. We must look after and respect them!
+    </p>
+    <p class="tl"
+      data-en="The <b>4 main local services</b> are: 👮 <b>Police and fire services</b> — Police officers keep citizens safe in the streets. Fire fighters put out fires and rescue people in danger. 🚌 <b>Transport services</b> — Public buses, trains and trams help people move around the municipality. 🎨 <b>Cultural and leisure services</b> — Organise sports and cultural events. They run libraries, museums, theatres and sports centres. 🗑️ <b>Waste management and sanitation</b> — Collect the rubbish, keep the city clean, maintain the sewage system (underground pipes for dirty water), and provide clean drinking water."
+      data-es="Los <b>4 servicios locales principales</b> son: 👮 <b>Policía y bomberos</b> — Los policías mantienen seguros a los ciudadanos en las calles. Los bomberos apagan incendios y rescatan a personas en peligro. 🚌 <b>Servicios de transporte</b> — Los autobuses, trenes y tranvías públicos ayudan a las personas a moverse por el municipio. 🎨 <b>Servicios culturales y de ocio</b> — Organizan eventos deportivos y culturales. Gestionan bibliotecas, museos, teatros y polideportivos. 🗑️ <b>Gestión de residuos y saneamiento</b> — Recogen la basura, mantienen limpia la ciudad, mantienen el sistema de alcantarillado (tuberías subterráneas para el agua sucia) y proporcionan agua potable limpia.">
+      <b>4 main services:</b> 👮 <b>Police & Fire</b> — safety and rescues. 🚌 <b>Transport</b> — buses and trains. 🎨 <b>Cultural & Leisure</b> — museums, libraries, sports. 🗑️ <b>Waste & Sanitation</b> — rubbish, clean city, clean water.
+    </p>
+    <div class="vocab-box">
+      <strong class="tl" data-en="🔑 Key Words" data-es="🔑 Palabras clave">🔑 Key Words</strong>
+      <div class="vocab-pills">
+        <div class="vocab-pill">local service <span>= servicio local</span></div>
+        <div class="vocab-pill">fire service <span>= bomberos</span></div>
+        <div class="vocab-pill">transport <span>= transporte</span></div>
+        <div class="vocab-pill">leisure <span>= ocio</span></div>
+        <div class="vocab-pill">waste management <span>= gestión de residuos</span></div>
+        <div class="vocab-pill">sanitation <span>= saneamiento</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-quiz">Quiz</span>
+      <span class="tl" data-en="Local Services Quiz (6 questions)" data-es="Quiz servicios (6 preguntas)">Local Services Quiz (6 questions)</span></div>
+    <div id="ls_quiz_container"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-drag">Drag & Drop</span>
+      <span class="tl" data-en="Which service does this action?" data-es="¿Qué servicio realiza esta acción?">Which service does this action?</span></div>
+    <p class="drag-instruction tl" data-en="📱 Tap a card then tap the correct box." data-es="📱 Toca una tarjeta y luego la caja correcta.">📱 Tap a card then tap the correct box.</p>
+    <div class="drag-items" id="lsDragItems"></div>
+    <div class="drag-zones" id="lsDragZones"></div>
+    <button class="check-btn" onclick="checkDrag('ls')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="lsDragFeedback"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-fill">Fill in the blanks</span>
+      <span class="tl" data-en="Complete the sentences" data-es="Completa las frases">Complete the sentences</span></div>
+    <div class="hint-banner tl" data-en="💡 Close spelling is fine — we accept small mistakes!" data-es="💡 Pequeños errores de ortografía son aceptados.">💡 Close spelling is fine — we accept small mistakes!</div>
+    <div id="lsFillContainer"></div>
+    <button class="check-btn" onclick="checkFill('ls')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="lsFillFeedback"></div>
+  </div>
+</div>
+
+<!-- SECTION 4: TAXES -->
+<div class="section-panel" id="sec4">
+  <div class="topic-intro">
+    <h2>💰 <span class="tl" data-en="What are municipal taxes?" data-es="¿Qué son los impuestos municipales?">What are municipal taxes?</span></h2>
+    <p class="tl"
+      data-en="The local council needs <b>money</b> to pay for all the local services. Where does this money come from? It comes from <b>taxes</b>! Taxes are money that citizens <b>must pay</b> to the government. There are different types of taxes."
+      data-es="El ayuntamiento necesita <b>dinero</b> para pagar todos los servicios locales. ¿De dónde viene este dinero? ¡De los <b>impuestos</b>! Los impuestos son el dinero que los ciudadanos <b>deben pagar</b> al gobierno. Hay diferentes tipos de impuestos.">
+      The local council needs <b>money</b> to pay for local services. This money comes from <b>taxes</b> — money citizens must pay to the government.
+    </p>
+    <p class="tl"
+      data-en="🏠 <b>Property tax</b> — Paid by citizens who <b>own a house</b>. The money is used to: keep streets clean, maintain the sewers (underground pipes), and build parks. 🚗 <b>Road tax</b> — Paid by citizens who <b>own a car or vehicle</b>. The money is used to: build and repair roads, install traffic signs, and regulate traffic."
+      data-es="🏠 <b>Impuesto sobre bienes inmuebles (IBI)</b> — Lo pagan los ciudadanos que <b>tienen una casa</b>. El dinero se usa para: mantener limpias las calles, mantener las alcantarillas (tuberías subterráneas) y construir parques. 🚗 <b>Impuesto sobre vehículos</b> — Lo pagan los ciudadanos que <b>tienen un coche o vehículo</b>. El dinero se usa para: construir y reparar carreteras, instalar señales de tráfico y regular el tráfico.">
+      🏠 <b>Property tax</b> — own a house → pays for streets, sewers, parks. 🚗 <b>Road tax</b> — own a car → pays for roads and traffic signs.
+    </p>
+    <p class="tl"
+      data-en="The local services are for <b>all citizens</b>. Everyone uses them! So it is fair that everyone helps to pay for them with taxes. We must look after these services and respect them. They help us improve our community! 🤝"
+      data-es="Los servicios locales son para <b>todos los ciudadanos</b>. ¡Todo el mundo los usa! Por eso es justo que todos ayuden a pagarlos con impuestos. Debemos cuidar estos servicios y respetarlos. ¡Nos ayudan a mejorar nuestra comunidad! 🤝">
+      Everyone uses local services, so everyone helps pay with taxes. They help us improve our community! 🤝
+    </p>
+    <div class="vocab-box">
+      <strong class="tl" data-en="🔑 Key Words" data-es="🔑 Palabras clave">🔑 Key Words</strong>
+      <div class="vocab-pills">
+        <div class="vocab-pill">tax / taxes <span>= impuesto/s</span></div>
+        <div class="vocab-pill">property tax <span>= IBI</span></div>
+        <div class="vocab-pill">road tax <span>= impuesto vehículos</span></div>
+        <div class="vocab-pill">sewer <span>= alcantarilla</span></div>
+        <div class="vocab-pill">citizen <span>= ciudadano</span></div>
+        <div class="vocab-pill">traffic sign <span>= señal de tráfico</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-quiz">Quiz</span>
+      <span class="tl" data-en="Taxes Quiz (6 questions)" data-es="Quiz impuestos (6 preguntas)">Taxes Quiz (6 questions)</span></div>
+    <div id="tx_quiz_container"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-drag">Drag & Drop</span>
+      <span class="tl" data-en="Property tax or road tax?" data-es="¿IBI o impuesto sobre vehículos?">Property tax or road tax?</span></div>
+    <p class="drag-instruction tl" data-en="📱 Tap a card then tap the correct box." data-es="📱 Toca una tarjeta y luego la caja correcta.">📱 Tap a card then tap the correct box.</p>
+    <div class="drag-items" id="txDragItems"></div>
+    <div class="drag-zones" id="txDragZones"></div>
+    <button class="check-btn" onclick="checkDrag('tx')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="txDragFeedback"></div>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-fill">Fill in the blanks</span>
+      <span class="tl" data-en="Complete the sentences" data-es="Completa las frases">Complete the sentences</span></div>
+    <div class="hint-banner tl" data-en="💡 'tax' or 'taxes', 'house' or 'houses', 'road' or 'roads' — all accepted!" data-es="💡 Singular o plural — ¡todos aceptados!">💡 'tax' or 'taxes', 'house' or 'houses' — all accepted!</div>
+    <div id="txFillContainer"></div>
+    <button class="check-btn" onclick="checkFill('tx')"><span class="tl" data-en="✓ Check answers" data-es="✓ Comprobar respuestas">✓ Check answers</span></button>
+    <div class="quiz-feedback" id="txFillFeedback"></div>
+  </div>
+</div>
+
+<!-- SECTION 5: WORD SEARCH -->
+<div class="section-panel" id="sec5">
+  <div class="topic-intro">
+    <h2>🔤 <span class="tl" data-en="Word Search" data-es="Sopa de letras">Word Search</span></h2>
+    <p class="tl" data-en="Find all 10 key words from Unit 4! 👇 Click the FIRST letter of the word, then click the LAST letter. The word will turn green if correct! Below each word you can see its Spanish meaning." data-es="¡Encuentra las 10 palabras clave de la Unidad 4! 👇 Haz clic en la PRIMERA letra de la palabra y luego en la ÚLTIMA. ¡La palabra se pondrá verde si es correcta!">Find all 10 key words! Click the FIRST letter, then the LAST letter. The word turns green if correct!</p>
+  </div>
+  <div class="activity-card">
+    <div class="activity-title"><span class="activity-badge badge-word">Word Search</span>
+      <span class="tl" data-en="Find the 10 words" data-es="Encuentra las 10 palabras">Find the 10 words</span></div>
+    <div class="word-search-wrap"><div class="word-grid" id="wordGrid"></div></div>
+    <div class="ws-words" id="wsWordList"></div>
+    <div class="quiz-feedback" id="wsFeedback" style="margin-top:14px"></div>
+  </div>
+</div>
+
+</main>
+
 <script>
-// STARS
-const starsEl = document.getElementById('stars');
-for(let i=0;i<60;i++){
-  const s=document.createElement('div'); s.className='star';
-  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*5}s;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;`;
-  starsEl.appendChild(s);
+let lang='en', totalScore=0, dragState={}, wsFirst=null, wsFoundWords=new Set();
+
+// ===========================
+// FUZZY ANSWER MATCHING
+// ===========================
+function norm(s){
+  return String(s).trim().toLowerCase()
+    .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e')
+    .replace(/[íìï]/g,'i').replace(/[óòö]/g,'o')
+    .replace(/[úùü]/g,'u').replace(/ñ/g,'n');
 }
-
-// STATE
-let selectedTablas=[1,2,3,4,5,6,7,8,9];
-let selectedModo='adivina';
-let numPreguntas=5;
-let currentQ=null;
-let score=0,errors=0,qNum=0;
-let timerInterval=null,timerLeft=60;
-let wrongAnswers=[];
-let answered=false;
-let ruletaSeen=[];
-
-// TABLA GRID
-const tablaGrid=document.getElementById('tablaGrid');
-for(let i=1;i<=9;i++){
-  const b=document.createElement('button'); b.className='tabla-btn active';
-  b.innerHTML=`<span>${i}</span>`; b.dataset.num=i;
-  b.onclick=()=>toggleTabla(i,b);
-  tablaGrid.appendChild(b);
+const NUM={one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',ten:'10',
+  uno:'1',dos:'2',tres:'3',cuatro:'4',cinco:'5',seis:'6',siete:'7',ocho:'8',nueve:'9',diez:'10',
+  '1':'one','2':'two','3':'three','4':'four','5':'five','6':'six','7':'seven','8':'eight','9':'nine','10':'ten'};
+function lev(a,b){
+  if(a===b)return 0; if(!a.length)return b.length; if(!b.length)return a.length;
+  const m=a.length,n=b.length,dp=[];
+  for(let i=0;i<=m;i++){dp[i]=[i];for(let j=1;j<=n;j++)dp[i][j]=i?0:j;}
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
 }
-function toggleTabla(n,btn){
-  const idx=selectedTablas.indexOf(n);
-  if(idx>=0){selectedTablas.splice(idx,1);btn.classList.remove('active');}
-  else{selectedTablas.push(n);btn.classList.add('active');}
-  updatePlayBtn();
-}
-function selectAll(){ selectedTablas=[1,2,3,4,5,6,7,8,9]; document.querySelectorAll('.tabla-btn').forEach(b=>b.classList.add('active')); updatePlayBtn(); }
-function selectNone(){ selectedTablas=[]; document.querySelectorAll('.tabla-btn').forEach(b=>b.classList.remove('active')); updatePlayBtn(); }
-function updatePlayBtn(){ document.getElementById('playBtn').disabled=selectedTablas.length===0; }
-
-// MODO
-function selectModo(btn){
-  document.querySelectorAll('.modo-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  selectedModo=btn.dataset.modo;
-  const hideNQ=selectedModo==='carrera'||selectedModo==='ruleta';
-  document.getElementById('numPreguntasCard').style.display=hideNQ?'none':'block';
-}
-
-// NUM PREGUNTAS
-function selectNQ(btn){
-  document.querySelectorAll('.nq-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  numPreguntas=parseInt(btn.dataset.n);
-  document.getElementById('nqCustom').value='';
-}
-function customNQ(inp){
-  let v=parseInt(inp.value);
-  if(isNaN(v)||v<1) return;
-  if(v>50){v=50;inp.value=50;}
-  numPreguntas=v;
-  document.querySelectorAll('.nq-btn').forEach(b=>b.classList.remove('active'));
-}
-
-// HELPERS
-function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-function randTabla(){return selectedTablas[Math.floor(Math.random()*selectedTablas.length)];}
-function G(id){return document.getElementById(id);}
-function show(id,d='block'){const e=G(id);e.classList.remove('d-none');if(d==='grid')e.style.display='grid';else if(d==='flex')e.style.display='flex';}
-function hide(id){G(id).classList.add('d-none');}
-
-// GENERATE QUESTION
-function generateQ(){
-  // a es siempre de las tablas seleccionadas, b es 1-10
-  const a=randTabla();
-  const b=rnd(1,10);
-  const res=a*b;
-
-  if(selectedModo==='adivina'||selectedModo==='carrera'){
-    return {type:'choice', qText:`${a} × ${b} = ?`, answer:res, opts:buildOpts(res,1,90)};
+function isOk(val, arr){
+  const v=norm(val); if(!v) return false;
+  for(const ans of arr){
+    const a=norm(ans);
+    if(v===a) return true;
+    if(v+'s'===a||v===a+'s') return true; // plural/singular
+    if(v.endsWith('s')&&v.slice(0,-1)===a||a.endsWith('s')&&a.slice(0,-1)===v) return true;
+    if(NUM[v]&&norm(NUM[v])===a) return true;  // number equivalence
+    if(NUM[a]&&norm(NUM[a])===v) return true;
+    if(v.length>=5&&lev(v,a)<=1) return true; // typo tolerance
   }
-  if(selectedModo==='escribe'){
-    return {type:'input', qText:`${a} × ${b} = ?`, answer:res};
-  }
-  if(selectedModo==='factor'){
-    // ocultar a o b aleatoriamente
-    const ocultarA=Math.random()<0.5;
-    const qText=ocultarA?`? × ${b} = ${res}`:`${a} × ? = ${res}`;
-    const correct=ocultarA?a:b;
-    return {type:'choice', qText, answer:correct, opts:buildOpts(correct,1,10)};
-  }
-  if(selectedModo==='verdadero'){
-    const isTrue=Math.random()<0.55;
-    let shown=res;
-    if(!isTrue){
-      const deltas=[-3,-2,-1,1,2,3];
-      let tries=0;
-      do{ shown=res+deltas[Math.floor(Math.random()*deltas.length)]; tries++; }
-      while((shown<=0||shown===res)&&tries<20);
-    }
-    return {type:'tf', qText:`${a} × ${b} = ${shown}`, answer:isTrue, realAnswer:res};
-  }
+  return false;
 }
 
-function buildOpts(correct,min,max){
-  const s=new Set([correct]);
-  let tries=0;
-  while(s.size<4&&tries<300){
-    tries++;
-    const d=rnd(1,4)*(Math.random()<0.5?1:-1);
-    const f=correct+d;
-    if(f>=min&&f<=max&&f!==correct) s.add(f);
+// ===========================
+// DATA: QUIZ
+// ===========================
+const Q={
+  v:[
+    {en:"What is a village?",es:"¿Qué es un pueblo?",opts:{en:["A small settlement with small population","A big city with many people","A modern district","An industrial area"],es:["Un pequeño núcleo con poca población","Una gran ciudad con mucha gente","Un barrio moderno","Una zona industrial"]},ans:0},
+    {en:"Where is the town hall in a village?",es:"¿Dónde está el ayuntamiento en un pueblo?",opts:{en:["In the main square","In the suburbs","In the modern district","Near the factory"],es:["En la plaza mayor","En los barrios periféricos","En el barrio moderno","Cerca de la fábrica"]},ans:0},
+    {en:"What are the streets like in a village?",es:"¿Cómo son las calles en un pueblo?",opts:{en:["Short and narrow","Wide and long","Full of traffic lights","Very modern"],es:["Cortas y estrechas","Anchas y largas","Llenas de semáforos","Muy modernas"]},ans:0},
+    {en:"What happens to small villages over time?",es:"¿Qué pasa con los pueblos pequeños con el tiempo?",opts:{en:["Young people leave and they get smaller","They become big cities","More hospitals are built","They always grow"],es:["Los jóvenes se van y se hacen más pequeños","Se convierten en grandes ciudades","Construyen más hospitales","Siempre crecen"]},ans:0},
+    {en:"A tourist village can be found...",es:"Un pueblo turístico se puede encontrar...",opts:{en:["In the mountains or by the sea","Only in big cities","Near airports","Only in flat areas"],es:["En la montaña o junto al mar","Solo en grandes ciudades","Cerca de aeropuertos","Solo en zonas llanas"]},ans:0},
+    {en:"Industrial villages have...",es:"Los pueblos industriales tienen...",opts:{en:["Factories and farms","Hotels and restaurants","Monuments and museums","Only small houses"],es:["Fábricas y granjas","Hoteles y restaurantes","Monumentos y museos","Solo casas pequeñas"]},ans:0}
+  ],
+  c:[
+    {en:"What is the historic centre?",es:"¿Qué es el centro histórico?",opts:{en:["The old part of the city","A new residential area","The area with tall buildings","The suburbs"],es:["La parte antigua de la ciudad","Una nueva zona residencial","La zona con edificios altos","Los barrios periféricos"]},ans:0},
+    {en:"Which is a DISADVANTAGE of city life?",es:"¿Cuál es un INCONVENIENTE de vivir en la ciudad?",opts:{en:["Traffic jams","Many hospitals","Many jobs","Cultural events"],es:["Atascos de tráfico","Muchos hospitales","Muchos trabajos","Eventos culturales"]},ans:0},
+    {en:"The suburbs are...",es:"Los barrios periféricos son...",opts:{en:["Residential areas away from the centre","The old part of the city","Full of monuments","Only for offices"],es:["Zonas residenciales alejadas del centro","La parte antigua de la ciudad","Llenas de monumentos","Solo para oficinas"]},ans:0},
+    {en:"What helps reduce traffic jams in cities?",es:"¿Qué ayuda a reducir los atascos?",opts:{en:["Using public transport","Having more cars","Building more suburbs","Closing museums"],es:["Usar el transporte público","Tener más coches","Construir más barrios periféricos","Cerrar los museos"]},ans:0},
+    {en:"In the modern district the buildings are...",es:"En el barrio moderno los edificios son...",opts:{en:["Tall","Low","Made of wood","Very old"],es:["Altos","Bajos","De madera","Muy antiguos"]},ans:0},
+    {en:"Which vehicle produces zero emissions?",es:"¿Qué vehículo produce cero emisiones?",opts:{en:["Bicycle","Petrol car","Lorry","Motorbike"],es:["Bicicleta","Coche de gasolina","Camión","Moto"]},ans:0}
+  ],
+  lc:[
+    {en:"What is a municipality?",es:"¿Qué es un municipio?",opts:{en:["A village, town or city and its territory","Only the town hall building","The mayor's house","A type of local service"],es:["Un pueblo o ciudad y su territorio","Solo el edificio del ayuntamiento","La casa del alcalde","Un tipo de servicio local"]},ans:0},
+    {en:"What is the head of the local council called?",es:"¿Cómo se llama el jefe del ayuntamiento?",opts:{en:["Mayor","Councillor","Citizen","Minister"],es:["Alcalde/Alcaldesa","Concejal","Ciudadano","Ministro"]},ans:0},
+    {en:"How often do citizens vote for the local council?",es:"¿Cada cuánto tiempo votan los ciudadanos?",opts:{en:["Every 4 years","Every year","Every 2 years","Every 6 years"],es:["Cada 4 años","Cada año","Cada 2 años","Cada 6 años"]},ans:0},
+    {en:"Who can vote in local elections?",es:"¿Quién puede votar en las elecciones locales?",opts:{en:["People over 18 years old","All children","Only the mayor","People over 16"],es:["Personas mayores de 18 años","Todos los niños","Solo el alcalde","Personas mayores de 16 años"]},ans:0},
+    {en:"What do councillors do?",es:"¿Qué hacen los concejales?",opts:{en:["They work in the local council and solve problems","They own houses and pay property tax","They collect the rubbish","They drive the buses"],es:["Trabajan en el ayuntamiento y resuelven problemas","Tienen casas y pagan el IBI","Recogen la basura","Conducen los autobuses"]},ans:0},
+    {en:"Where do the mayor and councillors work?",es:"¿Dónde trabajan el alcalde y los concejales?",opts:{en:["In the town hall","In the museum","In the fire station","In the library"],es:["En la casa consistorial","En el museo","En el parque de bomberos","En la biblioteca"]},ans:0}
+  ],
+  ls:[
+    {en:"Which service keeps people safe from fires?",es:"¿Qué servicio protege a las personas de los incendios?",opts:{en:["Fire service","Transport service","Cultural service","Sanitation service"],es:["Servicio de bomberos","Servicio de transporte","Servicio cultural","Servicio de saneamiento"]},ans:0},
+    {en:"What does the waste management service do?",es:"¿Qué hace el servicio de gestión de residuos?",opts:{en:["Collects rubbish and keeps the city clean","Organises museum events","Runs bus routes","Repairs roads"],es:["Recoge la basura y mantiene la ciudad limpia","Organiza eventos en museos","Gestiona rutas de autobús","Repara carreteras"]},ans:0},
+    {en:"Libraries, museums and sports centres belong to which service?",es:"Bibliotecas, museos y polideportivos, ¿a qué servicio pertenecen?",opts:{en:["Cultural and leisure service","Transport service","Police service","Sanitation service"],es:["Servicio cultural y de ocio","Servicio de transporte","Servicio de policía","Servicio de saneamiento"]},ans:0},
+    {en:"Who organises local services?",es:"¿Quién organiza los servicios locales?",opts:{en:["The local council","The national government","Private companies","The citizens alone"],es:["El ayuntamiento","El gobierno nacional","Empresas privadas","Los ciudadanos solos"]},ans:0},
+    {en:"Transport services provide...",es:"Los servicios de transporte proporcionan...",opts:{en:["Public buses, trains and trams","Rubbish collection","Museum exhibitions","Police patrols"],es:["Autobuses, trenes y tranvías públicos","Recogida de basura","Exposiciones en museos","Patrullas de policía"]},ans:0},
+    {en:"Sanitation services provide...",es:"Los servicios de saneamiento proporcionan...",opts:{en:["Clean drinking water","Bus routes","Sports events","Fire engines"],es:["Agua potable limpia","Rutas de autobús","Eventos deportivos","Camiones de bomberos"]},ans:0}
+  ],
+  tx:[
+    {en:"What are taxes?",es:"¿Qué son los impuestos?",opts:{en:["Money citizens pay to the government","Money the government gives to citizens","The price of services","The salary of councillors"],es:["Dinero que los ciudadanos pagan al gobierno","Dinero que el gobierno da a los ciudadanos","El precio de los servicios","El salario de los concejales"]},ans:0},
+    {en:"Who pays property tax?",es:"¿Quién paga el impuesto sobre bienes inmuebles?",opts:{en:["Citizens who own houses","Citizens who own cars","All children","Only the mayor"],es:["Ciudadanos que tienen casas","Ciudadanos que tienen coches","Todos los niños","Solo el alcalde"]},ans:0},
+    {en:"What is road tax used for?",es:"¿Para qué se usa el impuesto sobre vehículos?",opts:{en:["Building and repairing roads","Building parks","Paying museum staff","Collecting rubbish"],es:["Construir y reparar carreteras","Construir parques","Pagar al personal del museo","Recoger la basura"]},ans:0},
+    {en:"Property tax money is used for...",es:"El dinero del IBI se usa para...",opts:{en:["Keeping streets clean and building parks","Building new roads","Buying fire engines","Paying bus drivers"],es:["Mantener limpias las calles y construir parques","Construir nuevas carreteras","Comprar camiones de bomberos","Pagar a los conductores de autobús"]},ans:0},
+    {en:"Why do citizens pay taxes?",es:"¿Por qué pagan impuestos los ciudadanos?",opts:{en:["To pay for local services for everyone","To pay the mayor's salary only","To buy new buildings","It is optional"],es:["Para pagar los servicios locales para todos","Solo para pagar el sueldo del alcalde","Para comprar nuevos edificios","Es opcional"]},ans:0},
+    {en:"Who pays road tax?",es:"¿Quién paga el impuesto sobre vehículos?",opts:{en:["Citizens who own cars or vehicles","Citizens who own houses","Only lorry drivers","All students"],es:["Ciudadanos que tienen coches o vehículos","Ciudadanos que tienen casas","Solo los camioneros","Todos los estudiantes"]},ans:0}
+  ]
+};
+
+// ===========================
+// DATA: DRAG
+// ===========================
+const DRAG={
+  v:{items:{en:["Hotels & restaurants","Mountain location","Factories & farms","Large population","Few services","Attracts tourists"],es:["Hoteles y restaurantes","Ubicación en la montaña","Fábricas y granjas","Mucha población","Pocos servicios","Atrae turistas"]},zones:{en:["🏔️ Tourist village","🏭 Industrial village"],es:["🏔️ Pueblo turístico","🏭 Pueblo industrial"]},answers:{0:0,1:0,2:1,3:1,4:0,5:0}},
+  c:{items:{en:["Narrow streets","Wide streets","Monuments & museums","Tall buildings","Houses & factories","Low buildings"],es:["Calles estrechas","Calles anchas","Monumentos y museos","Edificios altos","Casas y fábricas","Edificios bajos"]},zones:{en:["🏛️ Historic centre","🏢 Modern district"],es:["🏛️ Centro histórico","🏢 Barrio moderno"]},answers:{0:0,1:1,2:0,3:1,4:1,5:0}},
+  lc:{items:{en:["Head of the council","Works in town hall","Elected every 4 years","Organises the municipality","Solves community problems","Represents all citizens"],es:["Jefe del ayuntamiento","Trabaja en la casa consistorial","Elegido cada 4 años","Organiza el municipio","Resuelve problemas de la comunidad","Representa a todos los ciudadanos"]},zones:{en:["👤 Mayor","🏛️ Local council"],es:["👤 Alcalde/Alcaldesa","🏛️ Ayuntamiento"]},answers:{0:0,1:1,2:0,3:1,4:1,5:1}},
+  ls:{items:{en:["Collecting rubbish","Running bus routes","Putting out fires","Organising museum events","Providing clean water","Keeping streets safe"],es:["Recoger la basura","Gestionar rutas de autobús","Apagar incendios","Organizar eventos en museos","Proporcionar agua limpia","Mantener las calles seguras"]},zones:{en:["👮 Police & Fire","🚌 Transport","🎨 Cultural & Leisure","🗑️ Waste & Sanitation"],es:["👮 Policía y Bomberos","🚌 Transporte","🎨 Cultural y Ocio","🗑️ Residuos y Saneamiento"]},answers:{0:3,1:1,2:0,3:2,4:3,5:0}},
+  tx:{items:{en:["Clean streets","New traffic signs","Build parks","Repair roads","Maintain sewers","Install road signs"],es:["Calles limpias","Nuevas señales de tráfico","Construir parques","Reparar carreteras","Mantener alcantarillas","Instalar señales de tráfico"]},zones:{en:["🏠 Property Tax","🚗 Road Tax"],es:["🏠 IBI (Bienes inmuebles)","🚗 Impuesto vehículos"]},answers:{0:0,1:1,2:0,3:1,4:0,5:1}}
+};
+
+// ===========================
+// DATA: FILL — blanks are arrays of accepted answers
+// ===========================
+const FILL={
+  v:{sentences:{
+    en:[
+      {text:"Villages are ___ settlements with a small ___.",blanks:[["small"],["population"]]},
+      {text:"In the centre of the village there is a main ___ with the town hall.",blanks:[["square"]]},
+      {text:"The buildings in a village are ___ and the streets are short and ___.",blanks:[["low"],["narrow"]]},
+      {text:"A tourist village is found in the ___ or by the ___.",blanks:[["mountains","mountain"],["sea","beach"]]}
+    ],
+    es:[
+      {text:"Los pueblos son núcleos ___ con poca ___.",blanks:[["pequeños","pequeño"],["población"]]},
+      {text:"En el centro del pueblo hay una ___ mayor con el ayuntamiento.",blanks:[["plaza"]]},
+      {text:"Los edificios de los pueblos son ___ y las calles son cortas y ___.",blanks:[["bajos","bajo"],["estrechas","estrecha"]]},
+      {text:"Un pueblo ___ se encuentra en la montaña o junto al ___.",blanks:[["turístico","turístico"],["mar","playa"]]}
+    ]
+  }},
+  c:{sentences:{
+    en:[
+      {text:"The ___ centre is the old part of the city with narrow streets.",blanks:[["historic"]]},
+      {text:"The modern ___ has wide streets and tall ___.",blanks:[["district"],["buildings","building"]]},
+      {text:"Using public ___ helps to reduce traffic ___.",blanks:[["transport"],["jams","jam","congestion"]]},
+      {text:"The ___ are new residential areas away from the city centre.",blanks:[["suburbs","suburb"]]}
+    ],
+    es:[
+      {text:"El centro ___ es la parte antigua de la ciudad.",blanks:[["histórico"]]},
+      {text:"El barrio ___ tiene calles anchas y edificios ___.",blanks:[["moderno"],["altos","alto"]]},
+      {text:"Usar el ___ público ayuda a reducir los ___ de tráfico.",blanks:[["transporte"],["atascos","atasco"]]},
+      {text:"Los barrios ___ son zonas residenciales lejos del centro.",blanks:[["periféricos","periférico"]]}
+    ]
+  }},
+  lc:{sentences:{
+    en:[
+      {text:"Every municipality has a local ___ that governs it.",blanks:[["council"]]},
+      {text:"The head of the local council is the ___.",blanks:[["mayor"]]},
+      {text:"Citizens vote every ___ years to elect the councillors.",blanks:[["4","four"]]},
+      {text:"The mayor and councillors work in the ___ ___.",blanks:[["town"],["hall"]]}
+    ],
+    es:[
+      {text:"Cada municipio tiene un ___ que lo gobierna.",blanks:[["ayuntamiento"]]},
+      {text:"El jefe del ayuntamiento se llama ___ o alcaldesa.",blanks:[["alcalde"]]},
+      {text:"Los ciudadanos votan cada ___ años para elegir al alcalde.",blanks:[["4","cuatro"]]},
+      {text:"Los ciudadanos mayores de ___ años pueden votar.",blanks:[["18","dieciocho"]]}
+    ]
+  }},
+  ls:{sentences:{
+    en:[
+      {text:"Police and fire services keep the people ___.",blanks:[["safe"]]},
+      {text:"Transport services provide ___ means of transport.",blanks:[["public"]]},
+      {text:"Waste management keeps the city ___ and provides clean ___.",blanks:[["clean"],["water"]]},
+      {text:"Cultural services organise events in libraries, ___ and sports centres.",blanks:[["museums","museum"]]}
+    ],
+    es:[
+      {text:"La policía y los bomberos mantienen a las personas ___.",blanks:[["seguras","segura","seguros"]]},
+      {text:"Los servicios de transporte proporcionan medios de transporte ___.",blanks:[["públicos","público"]]},
+      {text:"El saneamiento mantiene la ciudad ___ y proporciona agua ___.",blanks:[["limpia","limpio"],["potable"]]},
+      {text:"Los servicios culturales organizan eventos en bibliotecas, ___ y polideportivos.",blanks:[["museos","museo"]]}
+    ]
+  }},
+  tx:{sentences:{
+    en:[
+      {text:"The local council collects ___ to pay for local services.",blanks:[["taxes","tax"]]},
+      {text:"Citizens who own ___ pay property tax.",blanks:[["houses","a house","house"]]},
+      {text:"Road tax money is used to build and repair ___.",blanks:[["roads","road"]]},
+      {text:"Property tax money is used to keep streets ___ and build ___.",blanks:[["clean"],["parks","park"]]}
+    ],
+    es:[
+      {text:"El ayuntamiento recauda ___ para pagar los servicios locales.",blanks:[["impuestos","impuesto"]]},
+      {text:"Los ciudadanos que tienen ___ pagan el IBI.",blanks:[["casas","casa","una casa"]]},
+      {text:"El impuesto sobre vehículos se usa para construir y reparar ___.",blanks:[["carreteras","carretera"]]},
+      {text:"El dinero del IBI mantiene limpias las calles y construye ___.",blanks:[["parques","parque"]]}
+    ]
+  }}
+};
+
+// ===========================
+// WORD SEARCH
+// ===========================
+const WS_WORDS=['VILLAGE','MAYOR','COUNCIL','TAXES','POLICE','MUSEUM','SUBURB','TRANSPORT','ELECTION','SERVICES'];
+const WS_HINTS={VILLAGE:'pueblo',MAYOR:'alcalde',COUNCIL:'ayuntamiento',TAXES:'impuestos',POLICE:'policía',MUSEUM:'museo',SUBURB:'barrio periférico',TRANSPORT:'transporte',ELECTION:'elección',SERVICES:'servicios'};
+const WS_GRID=[
+  ['V','I','L','L','A','G','E','T','A','X','E','S'],
+  ['M','A','Y','O','R','S','L','R','P','W','Q','U'],
+  ['C','O','U','N','C','I','L','A','O','X','K','B'],
+  ['E','L','E','C','T','I','O','N','L','M','N','U'],
+  ['S','E','R','V','I','C','E','S','I','U','O','R'],
+  ['P','O','L','I','C','E','F','P','C','S','H','B'],
+  ['T','R','A','N','S','P','O','R','T','E','J','Q'],
+  ['M','U','S','E','U','M','K','L','A','U','D','Z'],
+  ['W','X','Y','Z','A','B','C','D','E','F','G','H'],
+  ['I','J','K','L','M','N','O','P','Q','R','S','T'],
+  ['U','V','W','X','Y','Z','A','B','C','D','E','F'],
+  ['G','H','I','J','K','L','M','N','O','P','Q','R']
+];
+const WS_POS={
+  VILLAGE:[{r:0,c:0},{r:0,c:1},{r:0,c:2},{r:0,c:3},{r:0,c:4},{r:0,c:5},{r:0,c:6}],
+  TAXES:[{r:0,c:7},{r:0,c:8},{r:0,c:9},{r:0,c:10},{r:0,c:11}],
+  MAYOR:[{r:1,c:0},{r:1,c:1},{r:1,c:2},{r:1,c:3},{r:1,c:4}],
+  COUNCIL:[{r:2,c:0},{r:2,c:1},{r:2,c:2},{r:2,c:3},{r:2,c:4},{r:2,c:5},{r:2,c:6}],
+  ELECTION:[{r:3,c:0},{r:3,c:1},{r:3,c:2},{r:3,c:3},{r:3,c:4},{r:3,c:5},{r:3,c:6},{r:3,c:7}],
+  SERVICES:[{r:4,c:0},{r:4,c:1},{r:4,c:2},{r:4,c:3},{r:4,c:4},{r:4,c:5},{r:4,c:6},{r:4,c:7}],
+  POLICE:[{r:5,c:0},{r:5,c:1},{r:5,c:2},{r:5,c:3},{r:5,c:4},{r:5,c:5}],
+  TRANSPORT:[{r:6,c:0},{r:6,c:1},{r:6,c:2},{r:6,c:3},{r:6,c:4},{r:6,c:5},{r:6,c:6},{r:6,c:7},{r:6,c:8}],
+  MUSEUM:[{r:7,c:0},{r:7,c:1},{r:7,c:2},{r:7,c:3},{r:7,c:4},{r:7,c:5}],
+  SUBURB:[{r:1,c:5},{r:1,c:6},{r:2,c:7},{r:2,c:8},{r:2,c:9},{r:2,c:10}]
+};
+
+// ===========================
+// QUIZ ENGINE
+// ===========================
+let QS={};
+function initQuiz(k,cid){QS[k]={idx:0,score:0};renderQ(k,cid);}
+function renderQ(k,cid){
+  const qs=Q[k],st=QS[k];
+  if(st.idx>=qs.length){
+    document.getElementById(cid).innerHTML=`<div style="text-align:center;padding:20px"><div style="font-size:2.5rem">🎉</div><div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--green)">${lang==='en'?'All done!':'¡Terminado!'} ${st.score}/${qs.length}</div></div>`;
+    addScore(st.score*10); return;
   }
-  // rellenar si falta
-  while(s.size<4){
-    const f=rnd(Math.max(min,correct-6),Math.min(max,correct+6));
-    if(!s.has(f)) s.add(f);
-  }
-  return [...s].sort(()=>Math.random()-0.5);
+  const q=qs[st.idx],opts=q.opts[lang],qt=q[lang],pct=Math.round(st.idx/qs.length*100);
+  document.getElementById(cid).innerHTML=`
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-question">${st.idx+1}/${qs.length} — ${qt}</div>
+    <div class="quiz-options">${opts.map((o,i)=>`<button class="quiz-opt" onclick="ansQ('${k}','${cid}',${i})">${o}</button>`).join('')}</div>
+    <div class="quiz-feedback" id="qfb_${k}"></div>
+    <button class="next-btn" id="qnext_${k}" onclick="nextQ('${k}','${cid}')">${lang==='en'?'Next →':'Siguiente →'}</button>`;
+}
+function ansQ(k,cid,ch){
+  const st=QS[k],q=Q[k][st.idx];
+  document.querySelectorAll(`#${cid} .quiz-opt`).forEach(b=>b.disabled=true);
+  const fb=document.getElementById(`qfb_${k}`);
+  if(ch===q.ans){document.querySelectorAll(`#${cid} .quiz-opt`)[ch].classList.add('correct');fb.textContent=lang==='en'?'✅ Correct! Well done!':'✅ ¡Correcto! ¡Muy bien!';fb.className='quiz-feedback ok';st.score++;showFB(true);}
+  else{document.querySelectorAll(`#${cid} .quiz-opt`)[ch].classList.add('wrong');document.querySelectorAll(`#${cid} .quiz-opt`)[q.ans].classList.add('correct');fb.textContent=(lang==='en'?'❌ Not quite. The answer is: ':'❌ No exactamente. La respuesta es: ')+q.opts[lang][q.ans];fb.className='quiz-feedback ko';showFB(false);}
+  document.getElementById(`qnext_${k}`).classList.add('show');
+}
+function nextQ(k,cid){QS[k].idx++;renderQ(k,cid);}
+
+// ===========================
+// DRAG & DROP
+// ===========================
+function initDrag(k){
+  const d=DRAG[k],items=d.items[lang],zones=d.zones[lang];
+  dragState[k]={placed:{}};
+  document.getElementById(`${k}DragItems`).innerHTML=items.map((it,i)=>`<div class="drag-chip" id="dc_${k}_${i}" draggable="true" ondragstart="dStart(event,'${k}',${i})" onclick="chipClick('${k}',${i})">${it}</div>`).join('');
+  const ze=document.getElementById(`${k}DragZones`);
+  ze.style.gridTemplateColumns=zones.length<=2?'1fr 1fr':'1fr 1fr';
+  ze.innerHTML=zones.map((z,zi)=>`<div class="drag-zone" id="dz_${k}_${zi}" ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event,'${k}',${zi})"><div class="drag-zone-label">${z}</div><div class="drag-zone-content" id="dzc_${k}_${zi}"></div></div>`).join('');
+  document.getElementById(`${k}DragFeedback`).textContent='';
+}
+let dKey=null,dIdx=null;
+function dStart(e,k,i){dKey=k;dIdx=i;e.dataTransfer.effectAllowed='move';}
+function dOver(e){e.preventDefault();e.currentTarget.classList.add('over');}
+function dLeave(e){e.currentTarget.classList.remove('over');}
+function dDrop(e,k,zi){e.preventDefault();e.currentTarget.classList.remove('over');if(dKey!==k)return;placeChip(k,dIdx,zi);}
+let sel={};
+function chipClick(k,i){
+  if(dragState[k].placed[i]!==undefined){rmChip(k,i);return;}
+  if(sel[k]===i){sel[k]=null;document.getElementById(`dc_${k}_${i}`).style.outline='';return;}
+  if(sel[k]!=null)document.getElementById(`dc_${k}_${sel[k]}`).style.outline='';
+  sel[k]=i;document.getElementById(`dc_${k}_${i}`).style.outline='3px solid var(--orange)';
+}
+function zoneClick(k,zi){
+  if(sel[k]==null)return;
+  const i=sel[k];document.getElementById(`dc_${k}_${i}`).style.outline='';sel[k]=null;placeChip(k,i,zi);
+}
+function placeChip(k,ii,zi){
+  const label=DRAG[k].items[lang][ii];
+  if(dragState[k].placed[ii]!==undefined)rmChip(k,ii);
+  dragState[k].placed[ii]=zi;
+  document.getElementById(`dc_${k}_${ii}`).classList.add('used');
+  const zc=document.getElementById(`dzc_${k}_${zi}`);
+  const d=document.createElement('div');d.className='dropped-chip';d.id=`dr_${k}_${ii}`;
+  d.innerHTML=`${label} <span class="remove" onclick="rmChip('${k}',${ii})">×</span>`;
+  zc.appendChild(d);
+}
+function rmChip(k,ii){
+  document.getElementById(`dc_${k}_${ii}`).classList.remove('used');
+  const d=document.getElementById(`dr_${k}_${ii}`);if(d)d.remove();
+  delete dragState[k].placed[ii];
+}
+function checkDrag(k){
+  const d=DRAG[k],placed=dragState[k].placed;
+  let correct=0,total=Object.keys(d.answers).length;
+  for(let i=0;i<total;i++)if(placed[i]!==undefined&&placed[i]===d.answers[i])correct++;
+  const fb=document.getElementById(`${k}DragFeedback`);
+  if(correct===total){fb.textContent=lang==='en'?'✅ Perfect! All correct!':'✅ ¡Perfecto! ¡Todo correcto!';fb.className='quiz-feedback ok';addScore(15);showFB(true);document.querySelectorAll(`[id^="dz_${k}_"]`).forEach(z=>z.classList.add('correct-zone'));}
+  else{fb.textContent=`${correct}/${total} ${lang==='en'?'correct. Try again!':'correcto. ¡Inténtalo de nuevo!'}`;fb.className='quiz-feedback ko';showFB(false);}
 }
 
-// START GAME
-function startGame(){
-  if(selectedTablas.length===0) return;
-  score=0;errors=0;qNum=0;wrongAnswers=[];answered=false;ruletaSeen=[];
-  G('scoreDisplay').textContent='0';
-  G('progressBarFill').style.width='0%';
-
-  hide('homeScreen'); hide('resultsScreen'); show('gameScreen');
-
-  if(selectedModo==='ruleta'){
-    hide('timerBadge'); hide('progressBadge');
-    show('roulettePanel'); hide('questionPanel');
-    resetRuleta();
-  } else if(selectedModo==='carrera'){
-    show('timerBadge','flex'); hide('progressBadge');
-    hide('roulettePanel'); show('questionPanel');
-    timerLeft=60; G('timerDisplay').textContent=60;
-    startTimer();
-    nextQuestion();
-  } else {
-    hide('timerBadge'); show('progressBadge');
-    hide('roulettePanel'); show('questionPanel');
-    updateProgress();
-    nextQuestion();
-  }
-}
-
-// TIMER
-function startTimer(){
-  clearInterval(timerInterval);
-  timerInterval=setInterval(()=>{
-    timerLeft--;
-    G('timerDisplay').textContent=timerLeft;
-    if(timerLeft<=0){clearInterval(timerInterval);showResults();}
-  },1000);
-}
-
-// RULETA
-function resetRuleta(){
-  G('ruletaNum').textContent='?';
-  G('ruletaNum').classList.remove('spinning');
-  G('spinBtn').disabled=false;
-  G('tablaCompleta').innerHTML='';
-  hide('tablaCompleta'); hide('ruletaOtraBtn'); hide('ruletaFinBtn');
-}
-
-function spinRuleta(){
-  if(selectedTablas.length===0) return;
-  G('spinBtn').disabled=true;
-  hide('tablaCompleta'); hide('ruletaOtraBtn'); hide('ruletaFinBtn');
-
-  const numEl=G('ruletaNum');
-  numEl.classList.add('spinning');
-
-  // No repetir tabla hasta haber visto todas
-  let available=selectedTablas.filter(t=>!ruletaSeen.includes(t));
-  if(available.length===0){ruletaSeen=[];available=[...selectedTablas];}
-  const finalTabla=available[Math.floor(Math.random()*available.length)];
-  ruletaSeen.push(finalTabla);
-
-  let spins=0;
-  const iv=setInterval(()=>{
-    numEl.textContent=selectedTablas[Math.floor(Math.random()*selectedTablas.length)];
-    spins++;
-    if(spins>=28){
-      clearInterval(iv);
-      numEl.classList.remove('spinning');
-      numEl.textContent=finalTabla;
-      mostrarTabla(finalTabla);
-    }
-  },70);
-}
-
-function mostrarTabla(t){
-  const c=G('tablaCompleta');
-  c.innerHTML='';
-  for(let i=1;i<=10;i++){
-    const d=document.createElement('div');
-    d.className='tabla-fila';
-    d.style.setProperty('--i',i);
-    d.innerHTML=`${t} × ${i} = <span style="color:var(--green)">${t*i}</span>`;
-    c.appendChild(d);
-  }
-  show('tablaCompleta');
-  show('ruletaOtraBtn');
-  show('ruletaFinBtn');
-}
-
-// QUESTIONS
-function nextQuestion(){
-  // Fin para modos con límite
-  if(selectedModo!=='carrera'&&qNum>=numPreguntas){showResults();return;}
-
-  answered=false;
-  currentQ=generateQ();
-  qNum++;
-  updateProgress();
-
-  // Reset UI
-  const fb=G('feedbackEl');
-  fb.className='d-none'; fb.textContent='';
-  hide('nextBtn');
-
-  // Texto pregunta
-  G('questionText').innerHTML=currentQ.qText.replace('?','<span class="blank">?</span>');
-
-  const labels={adivina:'🔢 ELIGE EL RESULTADO',factor:'❓ ¿QUÉ NÚMERO FALTA?',escribe:'✏️ ESCRIBE LA RESPUESTA',verdadero:'¿VERDADERO O FALSO?',carrera:'⏱️ ¡RÁPIDO!'};
-  G('modoLabel').textContent=labels[selectedModo]||'';
-
-  hide('opcionesPanel'); hide('inputPanel'); hide('tfPanel');
-
-  if(currentQ.type==='choice'){
-    show('opcionesPanel','grid');
-    const p=G('opcionesPanel'); p.innerHTML='';
-    currentQ.opts.forEach(opt=>{
-      const b=document.createElement('button');
-      b.className='opcion-btn'; b.textContent=opt;
-      b.onclick=()=>checkChoice(opt,b);
-      p.appendChild(b);
-    });
-  } else if(currentQ.type==='input'){
-    show('inputPanel','flex');
-    const inp=G('answerInput');
-    inp.value=''; inp.className='answer-input'; inp.disabled=false;
-    setTimeout(()=>inp.focus(),50);
-  } else if(currentQ.type==='tf'){
-    show('tfPanel','flex');
-    ['tfTrue','tfFalse'].forEach(id=>{
-      const b=G(id); b.disabled=false;
-      b.className='tf-btn '+(id==='tfTrue'?'verdadero':'falso');
-    });
-  }
-}
-
-function checkChoice(val,btn){
-  if(answered) return;
-  answered=true;
-  const ok=val===currentQ.answer;
-  register(ok);
-  document.querySelectorAll('.opcion-btn').forEach(b=>{
-    b.disabled=true;
-    // comparar como número para evitar fallos de tipo
-    if(Number(b.textContent)===currentQ.answer) b.classList.add('correct');
-    else if(b===btn&&!ok) b.classList.add('wrong');
+// ===========================
+// FILL IN THE BLANKS
+// ===========================
+function initFill(k,cid){
+  const data=FILL[k].sentences[lang];
+  let html='';
+  data.forEach((s,si)=>{
+    let t=s.text,bi=0;
+    t=t.replace(/___/g,()=>`<input class="fill-blank" id="fb_${k}_${si}_${bi++}" type="text" placeholder="?" autocomplete="off" autocorrect="off" spellcheck="false">`);
+    html+=`<div class="fill-sentence">${t}</div>`;
   });
-  showFeedback(ok, ok?null:currentQ.answer);
-  if(selectedModo==='carrera'){
-    setTimeout(()=>{ if(timerLeft>0) nextQuestion(); },800);
-  } else { show('nextBtn'); }
+  document.getElementById(cid).innerHTML=html;
+  document.getElementById(`${k}FillFeedback`).textContent='';
 }
-
-function checkInput(){
-  if(answered) return;
-  const val=parseInt(G('answerInput').value);
-  if(isNaN(val)) return;
-  answered=true;
-  G('answerInput').disabled=true;
-  const ok=val===currentQ.answer;
-  G('answerInput').className='answer-input '+(ok?'correct':'wrong');
-  register(ok);
-  showFeedback(ok, ok?null:currentQ.answer);
-  show('nextBtn');
-}
-
-function handleKey(e){ if(e.key==='Enter') checkInput(); }
-
-function checkTF(userAnswer){
-  if(answered) return;
-  answered=true;
-  const ok=userAnswer===currentQ.answer;
-  register(ok);
-  ['tfTrue','tfFalse'].forEach(id=>{
-    const b=G(id); b.disabled=true;
-    const isVerd=id==='tfTrue';
-    if(isVerd===currentQ.answer) b.classList.add('correct');
-    else if(isVerd===userAnswer&&!ok) b.classList.add('wrong');
-  });
-  showFeedback(ok, ok?null:currentQ.realAnswer);
-  show('nextBtn');
-}
-
-function register(ok){
-  if(ok){ score++; }
-  else { errors++; wrongAnswers.push({q:currentQ.qText, a:currentQ.answer??currentQ.realAnswer}); }
-  G('scoreDisplay').textContent=score;
-}
-
-function showFeedback(ok, rightAnswer){
-  const oks=['¡Genial! 🎉','¡Exacto! ⭐','¡Muy bien! 🚀','¡Correcto! 🏆','¡Eres un crack! 💪'];
-  const errs=['¡Casi! 😅','¡Sigue intentando! 💪','Uy, error 😬','¡La próxima! 🌟'];
-  const fb=G('feedbackEl');
-  fb.className='feedback '+(ok?'correct':'feedback-wrong');
-  fb.textContent=ok
-    ? oks[Math.floor(Math.random()*oks.length)]
-    : errs[Math.floor(Math.random()*errs.length)]+(rightAnswer!=null?` La respuesta era ${rightAnswer}`:'');
-  if(ok&&score%5===0&&score>0) confetti();
-}
-
-function updateProgress(){
-  if(selectedModo==='carrera') return;
-  G('progressDisplay').textContent=`${qNum}/${numPreguntas}`;
-  G('progressBarFill').style.width=`${Math.min((qNum/numPreguntas)*100,100)}%`;
-}
-
-// RESULTS
-function showResults(){
-  clearInterval(timerInterval);
-  hide('gameScreen'); hide('homeScreen'); show('resultsScreen');
-
-  const total=score+errors;
-  const pct=total>0?Math.round(score/total*100):0;
-  G('bigScore').textContent=pct+'%';
-  G('bigScore').style.color=pct>=80?'var(--green)':pct>=50?'var(--accent)':'var(--red)';
-  G('scoreMsg').textContent=pct>=90?'¡Increíble! Eres un genio 🌟':pct>=70?'¡Muy bien! 🏆':pct>=50?'¡Buen intento! 💪':'¡A seguir practicando! 📚';
-  G('correctCount').textContent=score;
-  G('wrongCount').textContent=errors;
-  setTimeout(()=>{
-    G('correctBar').style.width=total>0?(score/total*100)+'%':'0%';
-    G('wrongBar').style.width=total>0?(errors/total*100)+'%':'0%';
-  },100);
-
-  if(wrongAnswers.length>0){
-    let html=`<div style="font-size:0.85rem;font-weight:700;color:var(--text2);margin-bottom:8px;text-align:left;">📚 Repasar estas:</div>`;
-    wrongAnswers.forEach(w=>{
-      html+=`<div style="background:rgba(247,37,133,0.08);border-radius:8px;padding:8px 12px;margin-bottom:6px;font-weight:700;font-size:0.9rem;text-align:left;">${w.q.replace('?','<span style="color:var(--accent)">?</span>')} → <span style="color:var(--green)">${w.a}</span></div>`;
+function checkFill(k){
+  const data=FILL[k].sentences[lang];
+  let correct=0,total=0;
+  data.forEach((s,si)=>{
+    s.blanks.forEach((arr,bi)=>{
+      total++;
+      const inp=document.getElementById(`fb_${k}_${si}_${bi}`);if(!inp)return;
+      inp.classList.remove('correct-fill','wrong-fill');
+      const accepted=Array.isArray(arr)?arr:[arr];
+      if(isOk(inp.value,accepted)){inp.classList.add('correct-fill');correct++;}
+      else{inp.classList.add('wrong-fill');inp.placeholder=accepted[0];}
     });
-    G('wrongList').innerHTML=html;
-  } else { G('wrongList').innerHTML=''; }
-  if(pct>=80) confetti();
+  });
+  const fb=document.getElementById(`${k}FillFeedback`);
+  if(correct===total){fb.textContent=lang==='en'?'✅ All correct! Great job!':'✅ ¡Todo correcto! ¡Muy bien!';fb.className='quiz-feedback ok';addScore(12);showFB(true);}
+  else{fb.textContent=`${correct}/${total} ${lang==='en'?'correct. Check the red ones!':'correctas. ¡Revisa las rojas!'}`;fb.className='quiz-feedback ko';showFB(false);}
 }
 
-function goHome(){
-  clearInterval(timerInterval);
-  show('homeScreen'); hide('gameScreen'); hide('resultsScreen');
+// ===========================
+// WORD SEARCH
+// ===========================
+function initWS(){
+  const g=document.getElementById('wordGrid');
+  g.style.gridTemplateColumns=`repeat(${WS_GRID[0].length},34px)`;
+  g.innerHTML='';wsFirst=null;wsFoundWords=new Set();
+  WS_GRID.forEach((row,r)=>row.forEach((ch,c)=>{
+    const el=document.createElement('div');el.className='ws-cell';el.textContent=ch;
+    el.dataset.r=r;el.dataset.c=c;el.onclick=()=>wsClick(r,c,el);g.appendChild(el);
+  }));
+  document.getElementById('wsWordList').innerHTML=WS_WORDS.map(w=>`<div class="ws-word" id="wsw_${w}">${w}<small>${WS_HINTS[w]}</small></div>`).join('');
+  document.getElementById('wsFeedback').textContent='';
 }
-
-function confetti(){
-  const cols=['#f9c74f','#f3722c','#f72585','#43e97b','#4cc9f0','#b5179e','#fff'];
-  for(let i=0;i<55;i++){
-    const el=document.createElement('div'); el.className='confetti-piece';
-    el.style.cssText=`left:${Math.random()*100}vw;background:${cols[Math.floor(Math.random()*cols.length)]};--dur:${2+Math.random()*2}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()<0.5?'50%':'3px'};animation-delay:${Math.random()*0.5}s;`;
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),4500);
+function wsClick(r,c,cell){
+  if(!wsFirst){wsFirst={r,c,cell};cell.classList.add('selected');return;}
+  const {r:r1,c:c1}=wsFirst;wsFirst.cell.classList.remove('selected');wsFirst=null;cell.classList.remove('selected');
+  for(const w of WS_WORDS){
+    if(wsFoundWords.has(w))continue;
+    const pos=WS_POS[w];if(!pos)continue;
+    const f=pos[0],l=pos[pos.length-1];
+    if((f.r===r1&&f.c===c1&&l.r===r&&l.c===c)||(l.r===r1&&l.c===c1&&f.r===r&&f.c===c)){
+      wsFoundWords.add(w);
+      pos.forEach(p=>{const el=document.querySelector(`.ws-cell[data-r="${p.r}"][data-c="${p.c}"]`);if(el){el.classList.remove('selected');el.classList.add('found');}});
+      document.getElementById(`wsw_${w}`).classList.add('found-word');
+      addScore(8);showFB(true);
+      if(wsFoundWords.size===WS_WORDS.length){document.getElementById('wsFeedback').textContent=lang==='en'?'🎉 Amazing! You found ALL the words!':'🎉 ¡Increíble! ¡Encontraste TODAS las palabras!';document.getElementById('wsFeedback').className='quiz-feedback ok';}
+      return;
+    }
   }
+  document.querySelectorAll('.ws-cell.selected').forEach(e=>e.classList.remove('selected'));
 }
+
+// ===========================
+// SCORE
+// ===========================
+function addScore(p){totalScore+=p;document.getElementById('totalScore').textContent=totalScore;const s=Math.min(5,Math.floor(totalScore/50));document.getElementById('starsDisplay').textContent='⭐'.repeat(s)+'☆'.repeat(5-s);}
+function showFB(ok){
+  const pop=document.getElementById('feedbackPopup');
+  const emojis=['🌟','🎉','✨','🏆','👏','🎊'];
+  document.getElementById('feedbackEmoji').textContent=ok?emojis[Math.floor(Math.random()*emojis.length)]:'💪';
+  document.getElementById('feedbackMsg').textContent=ok?(lang==='en'?['Excellent!','Brilliant!','Amazing!','Super!','Perfect!'][Math.floor(Math.random()*5)]:['¡Excelente!','¡Brillante!','¡Increíble!','¡Súper!','¡Perfecto!'][Math.floor(Math.random()*5)]):(lang==='en'?'Keep trying!':'¡Sigue intentándolo!');
+  document.getElementById('feedbackMsg').style.color=ok?'var(--green)':'var(--orange)';
+  document.getElementById('feedbackPts').textContent=ok?'+points':(lang==='en'?'You can do it!':'¡Tú puedes!');
+  pop.classList.add('show');setTimeout(()=>pop.classList.remove('show'),1800);
+}
+function resetAll(){totalScore=0;document.getElementById('totalScore').textContent='0';document.getElementById('starsDisplay').textContent='☆☆☆☆☆';initAll();}
+
+// ===========================
+// LANGUAGE & TABS
+// ===========================
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&l==='en')||(i===1&&l==='es')));
+  document.querySelectorAll('.tl').forEach(el=>{if(el.dataset[l])el.innerHTML=el.dataset[l];});
+  document.getElementById('hTitle').textContent=l==='en'?'We Improve Our Community':'Mejoramos nuestra comunidad';
+  document.getElementById('hSub').textContent=l==='en'?'Unit 4 · Social Science · 3rd Grade':'Unidad 4 · Ciencias Sociales · 3º Primaria';
+  document.getElementById('ptsLabel').textContent=l==='en'?'points':'puntos';
+  initAll();
+}
+function showSection(idx){
+  document.querySelectorAll('.section-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+
+// ===========================
+// INIT
+// ===========================
+function initAll(){
+  ['v','c','lc','ls','tx'].forEach(k=>{
+    initQuiz(k,`${k}_quiz_container`);
+    initDrag(k);
+    initFill(k,`${k}FillContainer`);
+  });
+  document.querySelectorAll('.drag-zone').forEach(zone=>{
+    const p=zone.id.split('_'),k=p[1],zi=parseInt(p[2]);
+    zone.onclick=e=>{if(e.target.classList.contains('remove'))return;zoneClick(k,zi);};
+  });
+  initWS();
+}
+initAll();
 </script>
 </body>
 </html>
